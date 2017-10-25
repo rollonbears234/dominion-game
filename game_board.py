@@ -22,6 +22,8 @@ CARD_NAMES = ["CELLAR", "CHAPEL", "MOAT", "HARBINGER", "MERCHANT", "VASSAL", "VI
             "BANDIT", "COUNCIL ROOM", "FESTIVAL", "LABORATORY", "LIBRARY", "MARKET", "MINE", "SENTRY", "WITCH",
             "ARTISAN"]
 
+MONEY_CARDS = ["gold", "copper", "silver"]
+
 
 number_actions_per = 20 #TODO
 
@@ -370,8 +372,24 @@ class card():
             """
 
             """
-            #May need to change behavior of the player.draw, we might not want it to go directly into the active hand
-            #TODO can leave this card out of the game for now?
+            discarded_pile = []
+            while len(player.hand()) < 7:
+                curr_card = player.take(1)
+                print("card is " + curr_card.name)
+                if curr_card.type is "action":
+                    print("1) keep")
+                    print("2) discard")
+                    card_decision = raw_input("select move for action card:")
+                    if card_decision == "1":
+                        player.add(curr_card)
+                    else:
+                        discarded_pile.append(curr_card)
+                else:
+                    player.add(curr_card)
+
+            for card in discarded_pile:
+                player.discard(card)
+
 
         elif self.name == CARD_NAMES[21]: #MARKET
             """
@@ -386,6 +404,97 @@ class card():
             player.gold += 1
 
         elif self.name == CARD_NAMES[22]: #MINE
+            """
+            can trash a treasure from your hand and gain a treasure costing up to 3 more than it -> trash and upgrade
+            """
+            player_hand = player.hand()
+            money_cards = []
+            for card in player_hand:
+                if card.name in MONEY_CARDS:
+                    money_cards.append(card)
+
+            print("choose a card to upgrade by selecting the number") #privacy isn't important here, it is your turn
+            for i in range(len(money_cards)):
+                print(str(i) + ") " + money_cards[i].name)
+
+            card_choice = raw_input("Please enter the card number: ")
+            seleted_money = money_cards[int(card_choice)] #TODO what if they don't have money!!
+
+            upgrade = "" #don't let gold upgrades, just stupid
+            if seleted_money.type == "silver":
+                upgrade = "gold"
+            else:
+                upgrade = "silver" #TODO might need more cases here just in case users are stupid
+
+            new_gold = board.get(update)
+            player.add(new_gold)
+            player.trash(seleted_money)
+
+        elif self.name == CARD_NAMES[23]: #SENTRY
+            """
+            +1 card
+            +1 action
+            look at top 2 cards
+            trash/discard any number of them, put the rest back on top in any order
+            """
+            player.draw(1)
+            player.actions += 1
+
+            top_two = player.take(2) #TODO I like this for taking from the top, can also use this abstraction to implement .draw()
+            #can also take care of shuffling here if needed! It should always work, if not it will say, no more cards to draw, use a try and catch to cath this error
+            print("here is the first card:")
+            print(top_two[0].name)
+            print("type in 1) trash 2) discard 4) put back on top") #TODO they should be able to put on top in any order
+            choice_1 = raw_input("Please enter the numer: ")
+            if choice_1 == "1":
+                pass, #do nothing, the card is out of the game now
+            if choice_1 == "2":
+                player.discard(top_two[0])
+            else:
+                player.deck = [top_two[0]] + player.deck
+            print("type in 1) trash 2) discard 4) put back on top") #TODO they should be able to put on top in any order
+            print(top_two[1].name)
+            choice_2 = raw_input("Please enter the numer: ")
+            if choice_2 == "1":
+                pass, #do nothing, the card is out of the game now
+            if choice_2 == "2":
+                player.discard(top_two[0])
+            else:
+                player.deck = [top_two[0]] + player.deck
+
+        elif self.name == CARD_NAMES[24]: #WITCH
+            """
+            +2 cards
+            each other player gets a curse (unless moat!)
+            """
+
+            player.draw(2)
+
+            for other_players in board.players(player): #don't want to return myself???
+                if not other_players.contain("MOAT") #contains is an abstracted method!
+                    player.add(board.get("curse"))
 
 
-        elif self.name == CARD_NAMES[23]: #
+        elif self.name == CARD_NAMES[25]: #ARTISAN
+            """
+            gain a card costing up to 5
+            put a card from your hand onto your deck
+            -- similar to REMODEL
+            """
+
+            purchasing_power = 5
+
+            player.buy(purchasing_power, oneTime = True) #TODO this is a method we use in play time, after actions run out, they would buy, but this is a one time buy
+            #could get confusing because what if they try to use multiple buys and shit,
+
+            print("select a card from your hand to put on top of your deck")
+            for i in range(len(player.hand())):
+                print(str(i) + ") " + player.hand()[i].name)
+
+            selected_num = raw_input("Please enter the numer: ")
+            selected_card = player.hand[int(selected_num)]
+
+            player.hand.remove(selected_card) #TODO, do I need another custom method here? it would be an @override right?, I need something to just take cards from my deck
+            #the abstracted method would help move cards from hand to discard anyway when a turn ends
+
+            player.deck = [selected_card] +player.deck
