@@ -1,0 +1,55 @@
+Standard Deck - http://wiki.dominionstrategy.com/index.php/Dominion_(Base_Set)
+
+
+http://wiki.dominionstrategy.com/index.php/Main_Page
+http://wiki.dominionstrategy.com/index.php/Dominion
+https://www.thespruce.com/the-complete-guide-to-dominion-410905
+
+Neural Nets
+* https://www.google.com/search?client=safari&rls=en&q=neural+nets+python&ie=UTF-8&oe=UTF-8
+* think about how to store the data in the format the neural net wants
+
+
+Each card should be an object that contains its abilities, they take in
+game board so they can modify the attributes of the players turn!
+
+
+
+Python ML
+* https://www.google.com/search?client=safari&rls=en&q=how+to+train+a+game+in+python+with+machine+learning&ie=UTF-8&oe=UTF-8
+
+
+
+TO write about
+
+- how you reasoned some of your strategies, like balancing probability of getting a bold in the hand, etc.
+** you can calculate the prob of a action card using player.deck and player.discard_pile
+
+- include a picture of you playing with your computer, testing it out in the real world, talk about the testing process
+* how many would you need to play to have a statistically significant result?
+
+
+- make a table telling which tables win over the other strategies -> starter cards will matter here.
+
+Speech:
+- walk through how you coded the game
+- problems, anonymous hands, hard to hide when on one computer, talk about communicating with the sockets API
+- talk about any rule changes or simplifications to make the game work smoother (can't choose order when you put things back on top of the deck, don't want to keep asking the user questions, makes strategies have to cover more cases and I want to focus on their card playing strategies)
+- then give a demo
+- then talk about how you started implementing strategies, the stats behind your strategy (prob of ___)
+- then get the data of the best one given a set of cards (start out with the recommended games from online)
+- then talk about generation of testing data
+- then talk about playing with one of the best Strategies, how can I make it interactive so I can always make the best move when playing with my friends, I want to tell it somethig and it tell me what moves to make (put this in objectives)
+- then talk about running ML models, how did it do?
+- not sure how to play against it, but it won _ percet of times based on our data
+
+
+
+Game coding tactic:
+* I am starting with writing the cards, this helps me know what kind of methods and features I need to implement on the board
+* I like going through this even before I finalize designs just so I don't overlook something
+
+--> but how about instead of TODO's everywhere, you actually document your progress on the notion app that you are using for your projects
+    that way you actually have a roadmap of stuff to follow after
+    I am so eager to rush into coding I don't play and just make my life harder in the future.
+    my strategy now is make a mess and clean up...WTF how is that organized or logical

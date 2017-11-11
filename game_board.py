@@ -1,8 +1,6 @@
 """
 This is the global board, each player will join this board in the initializer and it will be turn based.
 
-
-
 #TODO how are you going to model card games, should I make a card class? each one has an action and an effect on the game board for the player?
 - you need a turn method that keeps track of the buy's and the actions left.
 
@@ -17,68 +15,194 @@ program a help function?? - should tell you cost, and name and action details
 
 #use for printing out the options when setting up the game
 #TODO change this to action names?
+#TODO GArdens could cause problems-> but it is a stock pile card and a victory card, it should be here, just need to handle dubplicate
 CARD_NAMES = ["CELLAR", "CHAPEL", "MOAT", "HARBINGER", "MERCHANT", "VASSAL", "VILLAGE", "WORKSHOP",
             "BUREAUCRAT", "GARDENS", "MILITIA", "MONEYLENDER", "POACHER", "REMODEL", "SMITHY", "THRONE ROOM",
             "BANDIT", "COUNCIL ROOM", "FESTIVAL", "LABORATORY", "LIBRARY", "MARKET", "MINE", "SENTRY", "WITCH",
             "ARTISAN"]
+MONEY_CARDS = ["GOLD", "COPPER", "SILVER"]
+VICTORY_CARDS = ["GARDENS", "ESTATE", "DUCHY", "PROVINCE"]
+CARD_INFO = {
+CARD_NAMES[0]: {"cost": 2}, #CELLAR
+CARD_NAMES[1]: {"cost": 2}, #CHAPEL
+CARD_NAMES[2]: {"cost": 2}, #MOAT
+CARD_NAMES[3]: {"cost": 3}, #HARBINGER
+CARD_NAMES[4]: {"cost": 3}, #MERCHANT
+CARD_NAMES[5]: {"cost": 3}, #VASSAL
+CARD_NAMES[6]: {"cost": 3}, #VILLAGE
+CARD_NAMES[7]: {"cost": 3}, #WORKSHOP
+CARD_NAMES[8]: {"cost": 4}, #BUREAUCRAT
+CARD_NAMES[9]: {"cost": 4}, #GARDENS
+CARD_NAMES[10]: {"cost": 4}, #MILITIA
+CARD_NAMES[11]: {"cost": 4}, #MONEYLENDER
+CARD_NAMES[12]: {"cost": 4}, #POACHER
+CARD_NAMES[13]: {"cost": 4}, #REMODEL
+CARD_NAMES[14]: {"cost": 4}, #SMITHY
+CARD_NAMES[15]: {"cost": 4}, #THRONE ROOM
+CARD_NAMES[16]: {"cost": 5}, #BANDIT
+CARD_NAMES[17]: {"cost": 5}, #COUNCIL ROOM
+CARD_NAMES[18]: {"cost": 5}, #FESTIVAL
+CARD_NAMES[19]: {"cost": 5}, #LABORATORY
+CARD_NAMES[20]: {"cost": 5}, #LIBRARY
+CARD_NAMES[21]: {"cost": 5}, #MARKET
+CARD_NAMES[22]: {"cost": 5}, #MINE
+CARD_NAMES[23]: {"cost": 5}, #SENTRY
+CARD_NAMES[24]: {"cost": 5}, #WITCH
+CARD_NAMES[25]: {"cost": 6} #ARTISAN
+MONEY_CARDS[0]: {"cost": 6} #GOLD
+MONEY_CARDS[1]: {"cost": 6} #COPPER
+MONEY_CARDS[2]: {"cost": 6} #SILVER
+VICTORY_CARDS[0]: {"cost": 6} #GARDENS
+VICTORY_CARDS[1]: {"cost": 6} #ESTATE
+VICTORY_CARDS[2]: {"cost": 6} #DUCHY
+VICTORY_CARDS[3]: {"cost": 6} #PROVINCE
+}
+num_cards_per_pile = 11
+num_gold = 30
+num_silver = 40
+num_copper = 60
+num_estate = 24
+num_duchy = 12
+num_province = 12
 
-MONEY_CARDS = ["gold", "copper", "silver"]
-
-
-number_actions_per = 20 #TODO
-
-
-
-
+#TODO
+#Curse Cards???
 
 class game_board():
 
-    def __init__(self, players = None, cards_used):
-        self.golds = num #TODO
-        self.silvers = num #TODO
-        self.coppers = num
-        self.cards = {}
+    def __init__(self):
+        self.golds = []
+        self.silvers = []
+        self.coppers = []
+        self.victory = {}
+        self.players = []
+        self.stock_piles = {}
 
-        for card_name in cards_used:
-            cards{card_name} = [card(card_name) for i in range(number_actions_per)]
+        #initializing the board
+        self.select_stock_cards()
+        self.setup_players()
+        self.init_money()
+        self.init_victory()
 
+    def select_stock_cards(self, name):
+        """
+        used to set up the initial 10 stockpiles
+        """
+        selected_cards = []
+        while len(selected_cards) != 10
+            self.print_all_info():
+            try:
+                card_choice = raw_input("Please enter a number: ")
+                if 0 < int(card_choice) <= 25:
+                    self.stock_piles[self.CARD_NAMES] = [card(self.CARD_NAMES[int(card_choice)] for _ in range(self.num_cards_per_pile))]
+            except:
+                print("please just type in the number you want to choose")
 
+    def setup_players(self):
+        """
+        initializes the player objects
+        """
+        #first, how many players do you want?
+        num_players = 0
+        while num_players = 0:
+            try:
+                card_choice = raw_input("How many players are playing?:  ")
+                if 0 < int(card_choice) <= 8:
+                    num_players = int(card_choice)
+            except:
+                print("please just type in a number between 0 and 8")
 
-    def pick_cards(name):
-        pass
+        players_left = num_players
+        while players_left > 0:
+            card_choice = raw_input("Setting up player" + str(num_players - players_left) + ", what is your player name?: ")
+            self.players.append(Player(player_name = card_choice))
 
-    def game_over():
+    def init_money(self):
+        self.golds[] = [card(MONEY_CARDS[0]) for _ in range(self.num_gold)]
+        self.coppers[] = [card(MONEY_CARDS[1]) for _ in range(self.num_copper)]
+        self.silvers[] = [card(MONEY_CARDS[2]) for _ in range(self.num_silver)]
+
+    def init_victory(self):
+        self.victory[VICTORY_CARDS[1]] = [card(VICTORY_CARDS[1]) for _ in range(self.num_estate)]
+        self.victory[VICTORY_CARDS[2]] = [card(VICTORY_CARDS[2]) for _ in range(self.num_duchy)]
+        self.victory[VICTORY_CARDS[3]] = [card(VICTORY_CARDS[3]) for _ in range(self.num_province)]
+
+    def print_all_info(self):
+        i = 0
+        for card in self.CARD_INFO.keys():
+            if card not in self.stock_piles.keys():
+                print(card, "costs " + card["cost"], "and its number is" + i)
+            i += 1
+
+    def game_over(self):
         """
         checks if game is at a terminal state
+
+        check if three stockpiles empty or the provinces are gone
         """
+        empty_stockpile_count = 0
+        num_province = len(self.victory["PROVINCE"])
+        for stock in self.stock_piles.keys():
+            if len(self.stock_piles[stock]) == 0:
+                empty_stockpile_count += 1
+        if empty_stockpile_count >= 3 or num_province == 0:
+            return True
+        else:
+            return False
 
+    def take(self, card_name):
+        """
+        lets a player take a card off the board into their hand
+        """
+        #TODO need to handle when one of the piles is empty, but can we check earlier to make this so we know the card is there?
+        try:
+            if card_name in self.stock_piles.keys()
+                return self.stock_piles[card_name].pop()
+            elif card_name in self.victory.keys()
+                return self.victory[card_name].pop()
+            elif card_name == "GOLD":
+                return self.golds.pop()
+            elif card_name in "SILVER":
+                return self.silvers.pop()
+            else:
+                return self.coppers.pop()
+        except:
+            return None
 
+    def num_players(self):
+        return len(players)
+
+    def player(self, my_player):
+        """
+        returns a list of players that are not myself
+        """
+        player_list = []
+        for player in self.players:
+            if my_player != player:
+                player_list.append(player)
+        return player_list
 
 
 class card():
 
     def __init__(self, card_name):
         self.name = card_name
-        self.cost = 0 #TODO, use a cost dictionary
+        self.cost = CARD_INFO[self.name]["cost"]
         self.type = ""
 
-        if self.name in CARD_NAMES:
-            self.type = "action" #do I need to specify attack or reaction? - Gardens if victory
-
-        if self.name == "GARDENS" or self.name in :
+        if self.name in self.CARD_NAMES:
+            self.type = "action"
+        elif self.name in self.VICTORY_CARDS :
             self.type = "victory"
+        else:
+            self.type = "money"
+
 
     def do_action(board, player):
-        #there must be a better way to do this
-        #TODO where are you subtracting player actions by 1 to represent played? - play.py?
-        #TODO also need to subtract one buy
         """
-        need to subtract a buy and the money
+        this does what it is told, it plays the card
         """
-        player.gold -= self.cost
-        player.buy -= 1
 
-        #Do I need an if statement like if player.buy == 0 don't do it!
         if self.name == CARD_NAMES[0]: #CELLAR
             #TODO after you play a card, it shouldn't be in your hard as an option
             """
@@ -117,7 +241,7 @@ class card():
 
             #TODO check to make sure they gave valid points
             #TODO, maybe do a try and catch into the trash function and
-            player.trash(list_choices) #TODO what are you passing in here
+            player.trash(list_choices) #TODO what are you passing in here AN INTEGER!
 
         elif self.name == CARD_NAMES[2]: #MOAT
             """
@@ -451,7 +575,7 @@ class card():
             if choice_1 == "2":
                 player.discard(top_two[0])
             else:
-                player.deck = [top_two[0]] + player.deck
+                player.deck = [top_two[0]] + player.deck #use add? or a different method #TODO
             print("type in 1) trash 2) discard 4) put back on top") #TODO they should be able to put on top in any order
             print(top_two[1].name)
             choice_2 = raw_input("Please enter the numer: ")
