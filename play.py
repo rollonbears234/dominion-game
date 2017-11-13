@@ -20,7 +20,7 @@ import random
 class Play():
 
     def __init__(self):
-            self.game_board = game_board()
+            self.game_board = game_board.Game_Board()
             self.curr_turn = random.randint(0, self.game_board.num_players() - 1)
             self.play()
 
@@ -31,11 +31,11 @@ class Play():
         """
         for card in self.game_board.stock_piles.keys():
             if len(self.game_board.stock_piles[card]) > 0:
-                print("Stockpile", self.game_board.stock_piles)
+                print("Stockpile", card, "cost " +  str(game_board.CARD_INFO[card]["cost"]))
         print("Golds", len(self.game_board.golds))
         print("Silvers", len(self.game_board.silvers))
         print("Coppers", len(self.game_board.coppers))
-        print("Victory Cards", self.game_board.victory)
+        print("Victory Cards", self.game_board.victory.keys()) #DUCHY or another might be 0
 
     def next_player(self):
         """
@@ -51,19 +51,63 @@ class Play():
         maybe use this for dialogue with the current user
         """
         print("Make your move, here is your hand")
+        print("Commands (the space is important): \n end: ends your turn \n play #: will play the #th card in your hand \n buy CARD_NAME: will buy the CARD_NAME from the game board, this can be money, a stockpile, or a victory card")
         player.print_hand()
-        card_choices = raw_input("Please enter something: ")
+        move_choice = raw_input("Command: ")
+        move_choice = move_choice.split(" ")
+        if move_choice[0] == "end":
+            return False
+        elif len(move_choice) == 2:
+
+            print(move_choice)
+            if move_choice[0] == "play":
+                #get the card and pass in game_board and player
+                try:
+                    selected_card = player.hand.pop(int(move_choice[1]))
+                    print("playing " + selected_card.name)
+                    selected_card.do_action(self.game_board, player)
+                    #need to move card from player_hand to player played
+                    player.played.append(selected_card)
+                except:
+                    player.hand.append(selected_card) #don't want to loose any cards
+                    print("Invalid Input for play, try again")
+            elif move_choice[0] == "buy":
+                #get the card and pass in game_board and player
+                try:
+                    if not self.game_board.buy(move_choice[1], player):
+                        print("Unable to buy that card, here is the game board again:")
+                        self.print_board()
+                except:
+                    print("Invalid Input for buy, try again, caps matter")
+            else:
+                print("Invalid Command, try again")
+        else:
+            print("Invalid Input, try again, caps matter")
+
+        print("\n")
 
     def play_turn(self):
-        self.print_board()
         curr_player = self.game_board.players[self.curr_turn]
+        print("Starting " + curr_player.player_name + "'s turn \n")
+        self.print_board()
+
         end_turn = False
         while not end_turn:
-            self.select(curr_player)
+            if self.select(curr_player) == False:
+                end_turn = True
+
+        print("\n")
         curr_player.end_turn()
-        self.next_player()
 
     def play(self):
-        while not game_board.game_over():
+        while not self.game_board.game_over():
             #player makes a move
+            self.next_player()
             self.play_turn()
+        print("GAME OVER!")
+        curr_player = self.game_board.players[self.curr_turn]
+        print("The winner is " + curr_player.name)
+
+if __name__ == '__main__':
+    print("Beginning a game")
+    game = Play()

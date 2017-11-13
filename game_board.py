@@ -12,6 +12,7 @@ I am not fond of the just list of names, have to manually count for everything
 program a help function?? - should tell you cost, and name and action details
 
 """
+import player
 
 #use for printing out the options when setting up the game
 #TODO change this to action names?
@@ -48,13 +49,13 @@ CARD_NAMES[21]: {"cost": 5}, #MARKET
 CARD_NAMES[22]: {"cost": 5}, #MINE
 CARD_NAMES[23]: {"cost": 5}, #SENTRY
 CARD_NAMES[24]: {"cost": 5}, #WITCH
-CARD_NAMES[25]: {"cost": 6} #ARTISAN
-MONEY_CARDS[0]: {"cost": 6} #GOLD
-MONEY_CARDS[1]: {"cost": 6} #COPPER
-MONEY_CARDS[2]: {"cost": 6} #SILVER
-VICTORY_CARDS[0]: {"cost": 6} #GARDENS
-VICTORY_CARDS[1]: {"cost": 6} #ESTATE
-VICTORY_CARDS[2]: {"cost": 6} #DUCHY
+CARD_NAMES[25]: {"cost": 6}, #ARTISAN
+MONEY_CARDS[0]: {"cost": 6, "value": 3}, #GOLD
+MONEY_CARDS[1]: {"cost": 6, "value": 1}, #COPPER
+MONEY_CARDS[2]: {"cost": 6, "value": 2}, #SILVER
+VICTORY_CARDS[0]: {"cost": 6}, #GARDENS
+VICTORY_CARDS[1]: {"cost": 6}, #ESTATE
+VICTORY_CARDS[2]: {"cost": 6}, #DUCHY
 VICTORY_CARDS[3]: {"cost": 6} #PROVINCE
 }
 num_cards_per_pile = 11
@@ -68,7 +69,7 @@ num_province = 12
 #TODO
 #Curse Cards???
 
-class game_board():
+class Game_Board():
 
     def __init__(self):
         self.golds = []
@@ -84,19 +85,33 @@ class game_board():
         self.init_money()
         self.init_victory()
 
-    def select_stock_cards(self, name):
+    def select_stock_cards(self):
         """
         used to set up the initial 10 stockpiles
         """
-        selected_cards = []
-        while len(selected_cards) != 10
-            self.print_all_info():
+        selected_cards = 0
+        previous_nums = []
+        self.print_all_info()
+        while selected_cards != 10:
+            #try:
+            card_choice = raw_input("Please enter a number: ")
             try:
-                card_choice = raw_input("Please enter a number: ")
-                if 0 < int(card_choice) <= 25:
-                    self.stock_piles[self.CARD_NAMES] = [card(self.CARD_NAMES[int(card_choice)] for _ in range(self.num_cards_per_pile))]
+                card_num = int(card_choice)
             except:
-                print("please just type in the number you want to choose")
+                print("You need to input a number!")
+                continue
+            if (0 <= int(card_choice) <= 25) and (int(card_choice) not in previous_nums):
+                card_name = CARD_NAMES[int(card_choice)]
+                print("Selected " + card_name)
+                self.stock_piles[card_name] = [card(card_name) for _ in range(num_cards_per_pile)]
+                previous_nums.append(int(card_choice))
+                selected_cards += 1
+            else:
+                print("The number has to be a action card, so between 0-25 and one you haven't selected before")
+                print("Previously selected = ", previous_nums)
+            #except:
+                #print("please just type in the number you want to choose")
+        print("Selected Cards: ", self.stock_piles.keys())
 
     def setup_players(self):
         """
@@ -104,7 +119,7 @@ class game_board():
         """
         #first, how many players do you want?
         num_players = 0
-        while num_players = 0:
+        while num_players == 0:
             try:
                 card_choice = raw_input("How many players are playing?:  ")
                 if 0 < int(card_choice) <= 8:
@@ -115,23 +130,27 @@ class game_board():
         players_left = num_players
         while players_left > 0:
             card_choice = raw_input("Setting up player" + str(num_players - players_left) + ", what is your player name?: ")
-            self.players.append(Player(player_name = card_choice))
+            self.players.append(player.Player(player_name = card_choice))
+            players_left -= 1
 
     def init_money(self):
-        self.golds[] = [card(MONEY_CARDS[0]) for _ in range(self.num_gold)]
-        self.coppers[] = [card(MONEY_CARDS[1]) for _ in range(self.num_copper)]
-        self.silvers[] = [card(MONEY_CARDS[2]) for _ in range(self.num_silver)]
+        self.golds = [card(MONEY_CARDS[0]) for _ in range(num_gold)]
+        self.coppers = [card(MONEY_CARDS[1]) for _ in range(num_copper)]
+        self.silvers = [card(MONEY_CARDS[2]) for _ in range(num_silver)]
 
     def init_victory(self):
-        self.victory[VICTORY_CARDS[1]] = [card(VICTORY_CARDS[1]) for _ in range(self.num_estate)]
-        self.victory[VICTORY_CARDS[2]] = [card(VICTORY_CARDS[2]) for _ in range(self.num_duchy)]
-        self.victory[VICTORY_CARDS[3]] = [card(VICTORY_CARDS[3]) for _ in range(self.num_province)]
+        self.victory[VICTORY_CARDS[1]] = [card(VICTORY_CARDS[1]) for _ in range(num_estate)]
+        self.victory[VICTORY_CARDS[2]] = [card(VICTORY_CARDS[2]) for _ in range(num_duchy)]
+        self.victory[VICTORY_CARDS[3]] = [card(VICTORY_CARDS[3]) for _ in range(num_province)]
 
     def print_all_info(self):
+        """
+        used to print stockpiles
+        """
         i = 0
-        for card in self.CARD_INFO.keys():
+        for card in CARD_NAMES:
             if card not in self.stock_piles.keys():
-                print(card, "costs " + card["cost"], "and its number is" + i)
+                print(card, "costs " + str(CARD_INFO[card]["cost"]), "and its number is " + str(i))
             i += 1
 
     def game_over(self):
@@ -150,27 +169,64 @@ class game_board():
         else:
             return False
 
+    def buy(self, card_name, player):
+        """
+        once we select a card, this will either buy it or return false saying we can't afford it
+        """
+        potential_card = self.take(card_name)
+        if potential_card is None:
+            print("That card is not available")
+            return False
+        elif player.buys > 0 and potential_card.cost <= player.money:
+            print("Buying " + potential_card.name)
+            player.money -= potential_card.cost
+            player.buys -= 1
+            player.hand.append(potential_card)
+            return True
+        else:
+            self.put_back(potential_card)
+            return False
+
     def take(self, card_name):
         """
         lets a player take a card off the board into their hand
         """
         #TODO need to handle when one of the piles is empty, but can we check earlier to make this so we know the card is there?
         try:
-            if card_name in self.stock_piles.keys()
+            if card_name in self.stock_piles.keys():
                 return self.stock_piles[card_name].pop()
-            elif card_name in self.victory.keys()
+            elif card_name in self.victory.keys():
                 return self.victory[card_name].pop()
             elif card_name == "GOLD":
                 return self.golds.pop()
             elif card_name in "SILVER":
                 return self.silvers.pop()
-            else:
+            elif card_name == "COPPER":
                 return self.coppers.pop()
+            else:
+                print("Card name doesn't exist")
+                return None
+        except:
+            print("that card might be empty")
+            return None #maybe a pile is empty
+
+    def put_back(self, card):
+        try:
+            if card.name in self.stock_piles.keys():
+                self.stock_piles[card_name].append(card)
+            elif card.name in self.victory.keys():
+                self.victory[card_name].append(card)
+            elif card.name == "GOLD":
+                self.golds.append(card)
+            elif card.name in "SILVER":
+                self.silvers.append(card)
+            elif card.name == "COPPER":
+                self.coppers.append(card)
         except:
             return None
 
     def num_players(self):
-        return len(players)
+        return len(self.players)
 
     def player(self, my_player):
         """
@@ -190,12 +246,12 @@ class card():
         self.cost = CARD_INFO[self.name]["cost"]
         self.type = ""
 
-        if self.name in self.CARD_NAMES:
+        if self.name in CARD_NAMES:
             self.type = "action"
-        elif self.name in self.VICTORY_CARDS :
+        elif self.name in VICTORY_CARDS :
             self.type = "victory"
         else:
-            self.type = "money"
+            self.type = "money" #TODO could cause problems if not right
 
 
     def do_action(board, player):
@@ -291,7 +347,7 @@ class card():
 
             #TODO plan better, I feel like I still don't know what any of the types of anything are,
             player.gold += 2
-            top_card = player.draw(1):
+            top_card = player.draw(1)
             if type(top_card) == action:
                 top_card.do_action(board, player)
                 #TODO  since draw puts it into their hand, you need to make sure to take it out too, after playing
@@ -571,7 +627,7 @@ class card():
             print("type in 1) trash 2) discard 4) put back on top") #TODO they should be able to put on top in any order
             choice_1 = raw_input("Please enter the numer: ")
             if choice_1 == "1":
-                pass, #do nothing, the card is out of the game now
+                print("Card is out of the game")
             if choice_1 == "2":
                 player.discard(top_two[0])
             else:
@@ -580,7 +636,8 @@ class card():
             print(top_two[1].name)
             choice_2 = raw_input("Please enter the numer: ")
             if choice_2 == "1":
-                pass, #do nothing, the card is out of the game now
+                print("card is out of the game")
+                #do nothing, the card is out of the game now
             if choice_2 == "2":
                 player.discard(top_two[0])
             else:
@@ -595,7 +652,7 @@ class card():
             player.draw(2)
 
             for other_players in board.players(player): #don't want to return myself???
-                if not other_players.contain("MOAT") #contains is an abstracted method!
+                if not other_players.contain("MOAT"): #contains is an abstracted method!
                     player.add(board.get("curse"))
 
 
