@@ -50,8 +50,8 @@ class Play():
         """
         maybe use this for dialogue with the current user
         """
-        print("Make your move, here is your hand")
-        print("Commands (the space is important): \n end: ends your turn \n play #: will play the #th card in your hand \n buy CARD_NAME: will buy the CARD_NAME from the game board, this can be money, a stockpile, or a victory card")
+        print("Make your move, here is your hand " + player.player_name)
+        print("Commands (the space is important): \n end: ends your turn \n play #: will play the #th card in your hand \n buy CARD_NAME: will buy the CARD_NAME from the game board, this can be money, a stockpile, or a victory card\n")
         player.print_hand()
         move_choice = raw_input("Command: ")
         move_choice = move_choice.split(" ")
@@ -62,25 +62,34 @@ class Play():
             print(move_choice)
             if move_choice[0] == "play":
                 #get the card and pass in game_board and player
-                try:
-                    selected_card = player.hand.pop(int(move_choice[1]))
-                    print("playing " + selected_card.name)
-                    selected_card.do_action(self.game_board, player)
-                    #need to move card from player_hand to player played
-                    player.played.append(selected_card)
-                except:
-                    player.hand.append(selected_card) #don't want to loose any cards
-                    print("Invalid Input for play, try again")
+                if player.actions > 0:
+                    try:
+                        hand_num = int(move_choice[1])
+                        selected_card = player.hand[hand_num]
+                        print("playing " + selected_card.name)
+                        selected_card.do_action(self.game_board, player)
+                        #need to move card from player_hand to player played
+                        player.hand.pop(hand_num) #only pop if it was played successfully
+                        player.played.append(selected_card)
+                        player.actions -= 1
+                    except Exception as e:
+                        print("Invalid Input for play, try again")
+                        print(e)
+                else:
+                    print("You do not have actions to play")
             elif move_choice[0] == "buy":
                 #get the card and pass in game_board and player
                 try:
-                    if not self.game_board.buy(move_choice[1], player):
-                        print("Unable to buy that card, here is the game board again:")
+                    choice_cap = move_choice[1].upper()
+                    if not self.game_board.buy(choice_cap, player):
+                        print("Unable to buy that card, here is the game board again: \n")
                         self.print_board()
                 except:
                     print("Invalid Input for buy, try again, caps matter")
             else:
                 print("Invalid Command, try again")
+        elif move_choice[0] == "finish":
+            self.game_board.victory["PROVINCE"] = []
         else:
             print("Invalid Input, try again, caps matter")
 
@@ -99,14 +108,38 @@ class Play():
         print("\n")
         curr_player.end_turn()
 
+    def winner(self):
+        """
+        I do not check for Ties
+        """
+        max_player = self.game_board.players[self.curr_turn] #current player
+        max_score = 0
+        for player in self.game_board.players:
+            curr_score = 0
+            num_gardens = 0
+            player.deck_all()
+            for card in player.deck:
+                if card.name == "GARDENS":
+                    num_gardens += 1
+                elif card.name in game_board.VICTORY_CARDS:
+                    curr_score += game_board.CARD_INFO[card.name]["points"]
+            curr_score += num_gardens*(len(player.deck)/ 10)
+
+            if curr_score > max_score:
+                max_score = curr_score
+                max_player = player
+            elif curr_score == max_score:
+                print("There was a tie, first player counter wins!")
+        return max_player
+
     def play(self):
         while not self.game_board.game_over():
             #player makes a move
             self.next_player()
             self.play_turn()
         print("GAME OVER!")
-        curr_player = self.game_board.players[self.curr_turn]
-        print("The winner is " + curr_player.name)
+        win_player  = self.game_board.players[self.curr_turn]
+        print("The winner is " + win_player.player_name)
 
 if __name__ == '__main__':
     print("Beginning a game")

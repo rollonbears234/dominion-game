@@ -51,12 +51,12 @@ CARD_NAMES[23]: {"cost": 5}, #SENTRY
 CARD_NAMES[24]: {"cost": 5}, #WITCH
 CARD_NAMES[25]: {"cost": 6}, #ARTISAN
 MONEY_CARDS[0]: {"cost": 6, "value": 3}, #GOLD
-MONEY_CARDS[1]: {"cost": 6, "value": 1}, #COPPER
-MONEY_CARDS[2]: {"cost": 6, "value": 2}, #SILVER
-VICTORY_CARDS[0]: {"cost": 6}, #GARDENS
-VICTORY_CARDS[1]: {"cost": 6}, #ESTATE
-VICTORY_CARDS[2]: {"cost": 6}, #DUCHY
-VICTORY_CARDS[3]: {"cost": 6} #PROVINCE
+MONEY_CARDS[1]: {"cost": 0, "value": 1}, #COPPER
+MONEY_CARDS[2]: {"cost": 3, "value": 2}, #SILVER
+VICTORY_CARDS[0]: {"cost": 4}, #GARDENS
+VICTORY_CARDS[1]: {"cost": 2, "points": 1}, #ESTATE
+VICTORY_CARDS[2]: {"cost": 5, "points": 3}, #DUCHY
+VICTORY_CARDS[3]: {"cost": 8, "points": 6} #PROVINCE
 }
 num_cards_per_pile = 11
 num_gold = 30
@@ -181,7 +181,7 @@ class Game_Board():
             print("Buying " + potential_card.name)
             player.money -= potential_card.cost
             player.buys -= 1
-            player.hand.append(potential_card)
+            player.played.append(potential_card)
             return True
         else:
             self.put_back(potential_card)
@@ -228,7 +228,7 @@ class Game_Board():
     def num_players(self):
         return len(self.players)
 
-    def player(self, my_player):
+    def players(self, my_player):
         """
         returns a list of players that are not myself
         """
@@ -254,32 +254,35 @@ class card():
             self.type = "money" #TODO could cause problems if not right
 
 
-    def do_action(board, player):
+    def do_action(self, board, player):
         """
-        this does what it is told, it plays the card
+        this does what it is told, it plays the card on the board played by player
         """
 
         if self.name == CARD_NAMES[0]: #CELLAR
-            #TODO after you play a card, it shouldn't be in your hard as an option
             """
             +1 action
             discard any number of cards from your hand (not this card) and draw that number of discarded cards
             """
             player.actions += 1
             print("Please type in which cards you would like to discard.")
-            print("Your current cards are" + player.cards) # I think we should print cards by 1) NAME and they select the numbers
-            print("Please type in the card numbers and comma seperate them with no space")
+            print("Input: comma seperated numbers starting at 0 from your hand \n")
 
             card_choices = raw_input("Please enter something: ")
 
             if " " in card_choices:
                 print("remember, no spaces and numbers seperated by commas, try again")
+                self.do_action(board, player) #self is me!
+            else:
+                try:
+                    list_choices = card_choices.split(",")
+                    player.hand_to_discard(list_choices)
+                    player.draw(len(list_choices)) #if it gets here, will already have discarded correctly and draw should never error
+                except Exception as e:
+                    print(e)
+                    print("Please try again, that was an invalid command \n")
+                    self.do_action(board, player)
 
-            list_choices = card_choices.split(",")
-
-            #TODO check to make sure they gave valid points
-            player.discard(list_choices) #TODO try and catch!
-            player.draw(len(list_choices))
 
         elif self.name == CARD_NAMES[1]: #CHAPEL
             """
@@ -287,17 +290,19 @@ class card():
             """
             print("Please type in which cards you would like to trash.")
             print("Your current cards are" + player.cards) # I think we should print cards by 1) NAME and they select the numbers
-            print("Please type in the card numbers and comma seperate them with no space")
+            print("Please type in the card numbers and comma seperate them with no space \n")
             card_choices = raw_input("Please enter something: ")
 
             if " " in card_choices:
                 print("remember, no spaces and numbers seperated by commas, try again")
-
-            list_choices = card_choices.split(",")
-
-            #TODO check to make sure they gave valid points
-            #TODO, maybe do a try and catch into the trash function and
-            player.trash(list_choices) #TODO what are you passing in here AN INTEGER!
+                self.do_action(board, player)
+            else:
+                list_choices = card_choices.split(",")
+                try:
+                    player.trash(list_choices)
+                except Exception as e:
+                    print(e)
+                    self.do_action(board, player)
 
         elif self.name == CARD_NAMES[2]: #MOAT
             """
@@ -315,15 +320,18 @@ class card():
             player.action += 1
 
             print("Your discard pile: type in the number to place that card on the top of your current deck")
-            discard_pile = player.discard_pile()
-            for i in range(len(discard_pile)):
-                print(str(i) + ") " + discard_pile[i].name)
+            for i in range(len(player.discard)):
+                print(str(i) + ") " + player.discard[i].name)
 
-            card_choice = raw_input("Please enter the card: ")
+            card_choice = raw_input("Please enter the card number: ")
 
-            #TODO clean this up and make it work this way, abstraction!
-            player.discard_pile().remove(card_choice)
-            player.deck = [card_choice] + player.deck
+            try:
+                card = player.discard[str(card_choice)]
+                player.discard.remove(card)
+                player.deck = [card] + player.deck
+            except Exception as e:
+                print("Incorrect card input, try again")
+                self.do_action(board, player)
 
         elif self.name == CARD_NAMES[4]: #MERCHANT
             """
@@ -334,9 +342,9 @@ class card():
             player.draw(1)
             player.action += 1
 
-            #TODO this is how I am interpreting the rule, but need a played section, only can do this if the card is played
-            #TODO say I can't do a persistant rule for this
-            if "SILVER" in player.played():
+            #TODO why would you play a silver then get gold, I don't get it
+            played_names = [player.played[i].name for i in range(len(player.played))]
+            if "SILVER" in played_names:
                 player.gold += 1
 
         elif self.name == CARD_NAMES[5]: #VASSAL
@@ -345,16 +353,13 @@ class card():
             discard top card of deck, if action card, play it
             """
 
-            #TODO plan better, I feel like I still don't know what any of the types of anything are,
-            player.gold += 2
-            top_card = player.draw(1)
-            if type(top_card) == action:
+            player.money += 2
+            top_card = player.take()
+            if top_card.name in game_board.CARD_NAMES:
                 top_card.do_action(board, player)
-                #TODO  since draw puts it into their hand, you need to make sure to take it out too, after playing
+                player.played.append(top_card)
             else:
-                player.discard(top_card) #TODO need a mechanism for discarding a card once you are done playing
-
-                #TODO don't discard until the hand is over, then current played cards go into discard
+                player.discard(top_card)
 
 
         elif self.name == CARD_NAMES[6]: #VILLAGE
@@ -363,25 +368,24 @@ class card():
             +2 actions
             """
             player.draw(1)
-            player.action += 2
+            player.actions += 2
 
         elif self.name == CARD_NAMES[7]: #WORKSHOP
             """
             gain any card costing up to 4
             """
-            available_cards =  board.get_cards() #TODO, some way to get the cards being used
-            print("Please select one of the cards to add to your hand:")
-            print("Select the card you want by typing in only the number")
-            for i in range(len(available_cards)):
-                #TODO, need to check if list empty - or it won't be because get_cards won't return something empty, or use a .top method?
-                print(str(i) + ") " + available_cards[i][0].name) #but the available card might not be a card object right? Or will I just store a list of card objects - YEA!
+            print("Please select one of the cards to add to your hand costing up to 4")
+            print("Select the card you want by typing the name:")
 
-            card_choice = raw_input("Please enter the card number: ")
+            card_choice = raw_input("Please enter the card name: ")
 
-            selected_card = board.get(card_choice) #TODO by the number???  - this affects how I store the card objects, numebrs are weird I think, some dictionary
-            player.add(selected_card)
-
-
+            try:
+                selected = self.game_board.stock_piles[card_choice.upper()].pop() #will
+                player.add(selected)
+            except Exception as e:
+                print(e) #maybe that card is out
+                print("Incorrect card input, try again")
+                self.do_action(board, player)
 
         elif self.name == CARD_NAMES[8]: #BUREAUCRAT
             """
@@ -389,9 +393,10 @@ class card():
             each other player reveals a victory card from their hand and puts it onto their deck (or revals a hand with no Victory cards!)
             """
             #TODO - how can a ML program or a strategy use this??
-            self.player.add(board.get("silver")) #TODO make sure this works
+            silver_card = self.game_board.silvers.pop()
+            player.add(silver_card)
 
-            for other_players in board.players(player): #don't want to return myself???
+            for other_players in self.game_board.players(player): #don't want to return myself???
                 other_hand = other_players.hand() #IMPORTANT this is why you always make their hand full after they end the turn and they don't play it until it is their turn
                 victory_list = []
                 for card in other_hand:
@@ -400,8 +405,7 @@ class card():
 
                 if victory_list.empty():
                     print("Player " + player.name + "'s hand is:")
-                    for card in other_hand:
-                        print(card.name)
+                    print other_hand
                 else:
                     print("Player" + player.name + "choose a victory card to get rid of from your hand")
                     #TODO can I hide this from other people??
@@ -425,26 +429,28 @@ class card():
             attack
             each other player discards down to 3 cards in their hand
             """
+
             #TODO for attach, each bot needs a strategy to handle this
             player.gold += 2
-            for other_players in board.players(player): #don't want to return myself???
-                other_players.discard_to(3) #TODO let this be a player specific implementation
+            for other_player in self.game_board.players(player): #don't want to return myself???
+                other_player.discard_to(3)
 
         elif self.name == CARD_NAMES[10]: #MONEYLENDER
             """
             You can trash a copper for +3 gold
             """
             contains_copper = False
-            for card in player.hand(): #TODO there must be a better way to abstract this
+            index = 0
+            card_types = [card.type for card in player.hand]
+            for card in card_types:
                 if card.name == "copper":
                     contains_copper = True
+                    break
+                index += 1
 
-            #TODO two ways to make this better, the trash method takes in a name and checks if there is a copper
-            #TODO you can also implement a player.contains method for name, call it hand_contains(name)
-
-            if contains_copper: #TODO need an easy way to check if you CAN_PLAY this card so my strategy can quickly check (can play this card)
+            if contains_copper:
                 #assume if they are playing it they want to
-                player.trash("copper")
+                player.trash(index)
 
         elif self.name == CARD_NAMES[12]: #POACHER
             """
@@ -458,9 +464,12 @@ class card():
             player.actions += 1
             player.gold += 1
 
-            empty_piles = 10 - len(board.stock_piles()) #TODO what does get cards return, just stock piles? TODO I also wrote a get cards function but need to change it
-            player.discard(empty_piles) #the discard function takes a number and makes the opponent discard that manually
-            #default discard could be discard everything and end turn???
+            empty_piles = 0
+            for stock in self.game_board.stock_piles.values():
+                if len(stock) == 0:
+                    empty_piles += 1
+
+            player.discard_to(len(player.hand) - empty_piles)
 
         elif self.name == CARD_NAMES[13]: #REMODEL
             """
@@ -527,7 +536,7 @@ class card():
             player.draw(4)
             player.buys += 1
 
-            for other_players in board.players(player):
+            for other_player in self.game_board.players(player):
                 other_players.draw(1)
 
         elif self.name == CARD_NAMES[18]: #FESTIVAL

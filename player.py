@@ -62,17 +62,21 @@ class Player():
             random.shuffle(deck)
 
     def discard(self, card):
+        """
+        does not remove from hand or anything, just appends the card
+        """
         self.discard.append(card)
 
-    def draw(self):
+    def draw(self, amount = 1):
 
-        if len(self.deck) > 0:
-            self.hand.append(self.deck.pop(0))
-        else:
-            self.deck = self.discard
-            self.discard = []
-            self.randomize_deck(self.deck)
-            self.draw()
+        for _ in range(amount):
+            if len(self.deck) > 0:
+                self.hand.append(self.deck.pop(0)) #Should be using self.add
+            else:
+                self.deck = self.discard
+                self.discard = []
+                self.randomize_deck(self.deck)
+                self.draw()
 
     def add(self, card):
         """
@@ -81,6 +85,9 @@ class Player():
         self.hand.append(card)
 
     def discard_to(self, num):
+        """
+        num is the number of cards the player needs to discard to
+        """
         #call self choose to use an interface that lets someone choose
         choose_string = "Player" + self.player_name + ", please discard down to" + str(num)
         #TODO
@@ -92,11 +99,28 @@ class Player():
     def contains(self, card_type):
         """
         should be true and false
+
+        need to do this for the hand though right?
         """
         for card in self.deck:
             if card.type == card_type:
                 return True
         return False
+
+    def hand_to_discard(self, list_indices):
+        """
+        used to take user input and discard selected cards from the hand
+        list_indeces might need to be converted to integers
+        """
+        [self.hand[int(i)] for i in list_indeces]
+        for card in self.hand:
+            self.discard(card)
+            self.hand.remove(card)
+
+    def trash(self, list_indeces):
+        [self.hand[int(i)] for i in list_indeces]
+        for card in self.hand:
+            self.hand.remove(card)
 
 
     def choose(self, choose_string, num_choices, action):
@@ -113,34 +137,27 @@ class Player():
         print("Please type in the card numbers and comma seperate them with no space")
 
         if " " in card_choices:
-            print("remember, no spaces and numbers seperated by commas, try again")
-
-        list_choices = card_choices.split(",")
-
-        if len(list_choices) != num_choices or " " in card_choices:
-            print("try again, you made a mistake")
             self.choose(choose_string, num_choices, action)
-
-        cards = []
-
-        for choice_num in list_choices:
-            cards.append(self.deck[int(choice_num)])
-
-        if action is not None:
-            for card in cards:
-                #TODO need to consider the card might still be in the deck
-                #TODO do I need to remove the card from the deck?
-                #TODO also need to figure out how to call the player.action when action is a function? or a string?
-                self.action(card)
+            print("remember, no spaces and numbers seperated by commas, try again")
         else:
-            return cards
+            list_choices = card_choices.split(",")
+            if len(list_choices) != num_choices or " " in card_choices:
+                print("try again, you made a mistake")
+                self.choose(choose_string, num_choices, action)
 
-    def select_from(self):
-        """
-        let the player handle picking a card
-        not sure if this is different than choose
-        """
-        pass
+            cards = []
+
+            for choice_num in list_choices:
+                cards.append(self.deck[int(choice_num)])
+
+            if action is not None:
+                for card in cards:
+                    #TODO need to consider the card might still be in the deck
+                    #TODO do I need to remove the card from the deck?
+                    #TODO also need to figure out how to call the player.action when action is a function? or a string?
+                    self.action(card)
+            else:
+                return cards
 
     def end_turn(self):
         for card in self.played:
@@ -153,3 +170,11 @@ class Player():
         self.actions = 1
         self.buys = 1
         self.start_hand()
+
+    def deck_all(self):
+        for card in self.hand:
+            self.deck.append(card)
+        for card in self.played:
+            self.deck.append(card)
+        for card in self.discard:
+            self.deck.append(card)
