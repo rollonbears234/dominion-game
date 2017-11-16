@@ -38,7 +38,7 @@ class Play():
         """
         for card in self.game_board.stock_piles.keys():
             if len(self.game_board.stock_piles[card]) > 0:
-                print("Stockpile", card, "cost " +  str(game_board.CARD_INFO[card]["cost"]))
+                print("Stockpile", card, "cost " +  str(game_board.CARD_INFO[card]["cost"]), "remaining", len(self.game_board.stock_piles[card]) )
         print("Golds", len(self.game_board.golds))
         print("Silvers", len(self.game_board.silvers))
         print("Coppers", len(self.game_board.coppers))
@@ -120,7 +120,7 @@ class Play():
         """
         I do not check for Ties
         """
-        max_player = self.game_board.players[self.curr_turn] #current player
+        max_player = self.game_board.players[0]
         max_score = 0
         for player in self.game_board.players:
             curr_score = 0
@@ -146,8 +146,7 @@ class Play():
             self.next_player()
             self.play_turn()
         print("GAME OVER!")
-        win_player  = self.game_board.players[self.curr_turn]
-        print("The winner is " + win_player.player_name)
+        print("The winner is " + self.winner().player_name)
 
     def simulate(self, strategy_list):
         """
@@ -155,6 +154,7 @@ class Play():
 
         strategy_list: string of strategies
         """
+        self.print_board()
         game_strategies = []
         sim_name = 0
         for str_strat in strategy_list:
@@ -162,23 +162,24 @@ class Play():
             sim_name += 1
 
         #need to initialize game board players
-        game_board.players = [strat.my_player for strat in game_strategies]
+        self.game_board.players = [strat.my_player for strat in game_strategies]
 
         #simulation loop
         curr_strat_index = random.randint(0, len(game_strategies) - 1)
         while not self.game_board.game_over(): #rotate through strategy objects until game ends
             #player makes a move
-            curr_strat_index = (1 + self.curr_strat_index) % len(game_strategies)
+            curr_strat_index = (1 + curr_strat_index) % len(game_strategies)
             curr_sim = game_strategies[curr_strat_index]
             sim_ended = False
             while not sim_ended: #simulation plays until it ends (this should always happen)
                 sim_move = curr_sim.make_decision(self.game_board)
                 if sim_move== "end":
-                    sim_ended == True
-
+                    break
+                    
         print("GAME OVER!")
+        print
         win_sim  = game_strategies[curr_strat_index].strategy_name
-        print("The winner is " + win_sim)
+        print("The winner is " + self.winner().player_name)
 
 
 if __name__ == '__main__':

@@ -67,7 +67,7 @@ class Player():
         else:
             random.shuffle(deck)
 
-    def discard(self, card):
+    def discard_func(self, card):
         """
         does not remove from hand or anything, just appends the card
         """
@@ -99,6 +99,10 @@ class Player():
         #TODO
 
     def take(self):
+        if len(self.deck) == 0:
+            self.deck = self.discard
+            self.discard = []
+            self.randomize_deck()
         card = self.deck.pop(0)
         return card
 

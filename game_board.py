@@ -13,6 +13,7 @@ program a help function?? - should tell you cost, and name and action details
 
 """
 import player
+import strategies
 
 #use for printing out the options when setting up the game
 #TODO change this to action names?
@@ -21,6 +22,7 @@ CARD_NAMES = ["CELLAR", "CHAPEL", "MOAT", "HARBINGER", "MERCHANT", "VASSAL", "VI
             "BUREAUCRAT", "GARDENS", "MILITIA", "MONEYLENDER", "POACHER", "REMODEL", "SMITHY", "THRONE ROOM",
             "BANDIT", "COUNCIL ROOM", "FESTIVAL", "LABORATORY", "LIBRARY", "MARKET", "MINE", "SENTRY", "WITCH",
             "ARTISAN"]
+
 MONEY_CARDS = ["GOLD", "COPPER", "SILVER"]
 VICTORY_CARDS = ["GARDENS", "ESTATE", "DUCHY", "PROVINCE"]
 CARD_INFO = {
@@ -191,7 +193,7 @@ class Game_Board():
         """
         potential_card = self.take(card_name)
         if potential_card is None:
-            print("That card is not available")
+            print("That card is not available", card_name)
             return False
         elif player.buys > 0 and potential_card.cost <= player.money:
             print("Buying " + potential_card.name)
@@ -220,31 +222,48 @@ class Game_Board():
             elif card_name == "COPPER":
                 return self.coppers.pop()
             else:
-                print("Card name doesn't exist")
+                #print("Card name doesn't exist", card_name)
                 return None
         except:
-            print("that card might be empty")
+            #print("that card might be empty", card_name)
             return None #maybe a pile is empty
+
+    def get_buyable(self):
+        """
+        gives a list of the available cards to buy
+        """
+        available = []
+        for card_name in CARD_INFO.keys():
+            curr_card = self.take(card_name)
+            if curr_card != None:
+                available.append(card_name)
+                self.put_back(curr_card)
+
+        return available
 
     def put_back(self, card):
         try:
             if card.name in self.stock_piles.keys():
-                self.stock_piles[card_name].append(card)
+                self.stock_piles[card.name].append(card)
             elif card.name in self.victory.keys():
-                self.victory[card_name].append(card)
+                self.victory[card.name].append(card)
             elif card.name == "GOLD":
                 self.golds.append(card)
             elif card.name in "SILVER":
                 self.silvers.append(card)
             elif card.name == "COPPER":
                 self.coppers.append(card)
-        except:
+            else:
+                print("Huge Error, fix this")
+                raise "error"
+        except Exception as e:
+            print(e)
             return None
 
     def num_players(self):
         return len(self.players)
 
-    def players(self, my_player):
+    def players_list(self, my_player):
         """
         returns a list of players that are not myself
         """
@@ -353,15 +372,15 @@ class card():
             """
             +1 card
             +1 action
-            first time play a silver this turn, +1 gold
+            first time play a silver this turn, +1 money
             """
             player.draw(1)
-            player.action += 1
+            player.actions += 1
 
             #TODO why would you play a silver then get gold, I don't get it
             played_names = [player.played[i].name for i in range(len(player.played))]
             if "SILVER" in played_names:
-                player.gold += 1
+                player.money += 1
 
         elif self.name == CARD_NAMES[5]: #VASSAL
             """
@@ -370,12 +389,13 @@ class card():
             """
 
             player.money += 2
-            top_card = player.take()
-            if top_card.name in game_board.CARD_NAMES:
+            top_card = player.take() #TODO might have to reshuffle!
+            if top_card.name in CARD_NAMES:
                 top_card.do_action(board, player)
                 player.played.append(top_card)
             else:
-                player.discard(top_card)
+
+                player.discard_func(top_card)
 
 
         elif self.name == CARD_NAMES[6]: #VILLAGE
@@ -433,13 +453,14 @@ class card():
                     other_players.deck = [victory_list[int(card_choice)]] + other_players.deck #Putting it on deck, #TODO make a method for this, kinda common action
 
 
-        elif self.name == CARD_NAMES[8]: #GARDENS
+        elif self.name == CARD_NAMES[9]: #GARDENS
             """
             this is a victory card, only counts at game end
             """
-            pass
+            print("Nothing to do here")
 
-        elif self.name == CARD_NAMES[9]: #MILITIA
+
+        elif self.name == CARD_NAMES[10]: #MILITIA
             """
             +2 gold
             attack
@@ -447,19 +468,19 @@ class card():
             """
 
             #TODO for attach, each bot needs a strategy to handle this
-            player.gold += 2
-            for other_player in self.game_board.players(player): #don't want to return myself???
+            player.money += 2
+            for other_player in board.players(player): #don't want to return myself???
                 other_player.discard_to(3)
 
-        elif self.name == CARD_NAMES[10]: #MONEYLENDER
+        elif self.name == CARD_NAMES[11]: #MONEYLENDER
             """
             You can trash a copper for +3 gold
             """
             contains_copper = False
             index = 0
-            card_types = [card.type for card in player.hand]
-            for card in card_types:
-                if card.name == "copper":
+            card_names = [card.name for card in player.hand]
+            for curr_name in card_names:
+                if curr_name == "copper":
                     contains_copper = True
                     break
                 index += 1
@@ -467,18 +488,19 @@ class card():
             if contains_copper:
                 #assume if they are playing it they want to
                 player.trash(index)
+                player.money += 3
 
         elif self.name == CARD_NAMES[12]: #POACHER
             """
             +1 card
             +1 action
-            +1 gold
+            +1 money
             discard a card per empty stock pile
             """
 
             player.draw(1)
             player.actions += 1
-            player.gold += 1
+            player.money += 1
 
             empty_piles = 0
             for stock in self.game_board.stock_piles.values():
@@ -541,7 +563,7 @@ class card():
                         player.trash(top) #TODO need to give them a choice if they happen to have two
                         trashed = True
                     else:
-                        player.discard(top)
+                        player.discard_func(top)
 
         elif self.name == CARD_NAMES[17]: #COUNCIL ROOM
             """
@@ -552,18 +574,18 @@ class card():
             player.draw(4)
             player.buys += 1
 
-            for other_player in self.game_board.players(player):
-                other_players.draw(1)
+            for other_player in board.players_list(player):
+                other_player.draw(1)
 
         elif self.name == CARD_NAMES[18]: #FESTIVAL
             """
             +2 actions
             +1 buy
-            +2 gold
+            +2 money
             """
             player.actions += 2
             player.buys += 1
-            player.gold += 2
+            player.money += 2
 
         elif self.name == CARD_NAMES[19]: #LABORATORY
             """
@@ -601,12 +623,12 @@ class card():
             +1 card
             +1 action
             +1 buy
-            +1 gold
+            +1 money
             """
             player.draw(1)
             player.actions += 1
             player.buys += 1
-            player.gold += 1
+            player.money += 1
 
         elif self.name == CARD_NAMES[22]: #MINE
             """
@@ -664,7 +686,7 @@ class card():
                 print("card is out of the game")
                 #do nothing, the card is out of the game now
             if choice_2 == "2":
-                player.discard(top_two[0])
+                player.discard_func(top_two[0])
             else:
                 player.deck = [top_two[0]] + player.deck
 
