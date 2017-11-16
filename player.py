@@ -42,6 +42,12 @@ class Player():
             if card.type == "money":
                 self.money += game_board.CARD_INFO[card.name]["value"]
 
+    def recalc(self):
+        self.money = 0
+        for card in self.hand:
+            if card.type == "money":
+                self.money += game_board.CARD_INFO[card.name]["value"]
+
     def print_hand(self):
         """
         used for interacting with the user so he/she know which cards they can play

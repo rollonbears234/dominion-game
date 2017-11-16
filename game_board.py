@@ -71,13 +71,14 @@ num_province = 12
 
 class Game_Board():
 
-    def __init__(self):
+    def __init__(self, sim_mode = False):
         self.golds = []
         self.silvers = []
         self.coppers = []
         self.victory = {}
         self.players = []
         self.stock_piles = {}
+        self.sim_mode = sim_mode
 
         #initializing the board
         self.select_stock_cards()
@@ -100,8 +101,14 @@ class Game_Board():
             except:
                 print("You need to input a number!")
                 continue
-            if (0 <= int(card_choice) <= 25) and (int(card_choice) not in previous_nums):
+            if not self.sim_mode and (0 <= int(card_choice) <= 25) and (int(card_choice) not in previous_nums):
                 card_name = CARD_NAMES[int(card_choice)]
+                print("Selected " + card_name)
+                self.stock_piles[card_name] = [card(card_name) for _ in range(num_cards_per_pile)]
+                previous_nums.append(int(card_choice))
+                selected_cards += 1
+            elif self.sim_mode and (0 <= int(card_choice) <= 11) and (int(card_choice) not in previous_nums):
+                card_name = strategies.working_cards[int(card_choice)]
                 print("Selected " + card_name)
                 self.stock_piles[card_name] = [card(card_name) for _ in range(num_cards_per_pile)]
                 previous_nums.append(int(card_choice))
@@ -118,6 +125,9 @@ class Game_Board():
         initializes the player objects
         """
         #first, how many players do you want?
+        if self.sim_mode:
+            return
+
         num_players = 0
         while num_players == 0:
             try:
@@ -148,10 +158,16 @@ class Game_Board():
         used to print stockpiles
         """
         i = 0
-        for card in CARD_NAMES:
-            if card not in self.stock_piles.keys():
-                print(card, "costs " + str(CARD_INFO[card]["cost"]), "and its number is " + str(i))
-            i += 1
+        if not self.sim_mode:
+            for card in CARD_NAMES:
+                if card not in self.stock_piles.keys():
+                    print(card, "costs " + str(CARD_INFO[card]["cost"]), "and its number is " + str(i))
+                i += 1
+        else:
+            for card in strategies.working_cards:
+                if card not in self.stock_piles.keys():
+                    print(card, "costs " + str(CARD_INFO[card]["cost"]), "and its number is " + str(i))
+                i += 1
 
     def game_over(self):
         """

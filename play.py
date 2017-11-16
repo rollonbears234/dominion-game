@@ -15,14 +15,21 @@ Makes sure the player has enough money to buy the card by comparing gold to card
 import player
 import game_board
 import random
+import strategies
 
 
 class Play():
 
-    def __init__(self):
-            self.game_board = game_board.Game_Board()
-            self.curr_turn = random.randint(0, self.game_board.num_players() - 1)
-            self.play()
+    def __init__(self, mode = "users"):
+            if mode == "users":
+                self.game_board = game_board.Game_Board()
+                self.curr_turn = random.randint(0, self.game_board.num_players() - 1)
+                self.play()
+            elif mode == "sim":
+                self.game_board = game_board.Game_Board(True)
+                print("Here are the strategies: ", strategies.strategies)
+                raw_strategies = raw_input("CSV of strategies you want: ")
+                self.simulate(raw_strategies.split(","))
 
     def print_board(self):
         """
@@ -72,6 +79,7 @@ class Play():
                         player.hand.pop(hand_num) #only pop if it was played successfully
                         player.played.append(selected_card)
                         player.actions -= 1
+                        player.recalc()
                     except Exception as e:
                         print("Invalid Input for play, try again")
                         print(e)
@@ -141,6 +149,39 @@ class Play():
         win_player  = self.game_board.players[self.curr_turn]
         print("The winner is " + win_player.player_name)
 
+    def simulate(self, strategy_list):
+        """
+        similar to play but this puts the strategies against each other
+
+        strategy_list: string of strategies
+        """
+        game_strategies = []
+        sim_name = 0
+        for str_strat in strategy_list:
+            game_strategies.append(strategies.Strategy(str_strat, str(sim_name)))
+            sim_name += 1
+
+        #need to initialize game board players
+        game_board.players = [strat.my_player for strat in game_strategies]
+
+        #simulation loop
+        curr_strat_index = random.randint(0, len(game_strategies) - 1)
+        while not self.game_board.game_over(): #rotate through strategy objects until game ends
+            #player makes a move
+            curr_strat_index = (1 + self.curr_strat_index) % len(game_strategies)
+            curr_sim = game_strategies[curr_strat_index]
+            sim_ended = False
+            while not sim_ended: #simulation plays until it ends (this should always happen)
+                sim_move = curr_sim.make_decision(self.game_board)
+                if sim_move== "end":
+                    sim_ended == True
+
+        print("GAME OVER!")
+        win_sim  = game_strategies[curr_strat_index].strategy_name
+        print("The winner is " + win_sim)
+
+
 if __name__ == '__main__':
     print("Beginning a game")
-    game = Play()
+    mode = raw_input("Select a mode (users, sim): ")
+    game = Play(mode)

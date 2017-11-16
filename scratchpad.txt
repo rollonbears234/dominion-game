@@ -28,8 +28,22 @@ TO write about
 - include a picture of you playing with your computer, testing it out in the real world, talk about the testing process
 * how many would you need to play to have a statistically significant result?
 
+- what I learned coding
+ - play, game_board, and player, what are their purposes, and cards (cards just play, they don't do any checking of points or anything, we can do that once and never do it again in play manager)
+ - interface in terminal -> would like to make it a GUI
+
+- Simulation
+  - so talk about how I build the game to be played with a specific set of cards, and then needed to adapt a playable version to be testable
+  - do some research on simulation, make at least two strategies
+  - talk about how starting with random helped you get a sense for how these strategies work
+  -  strategy design, need to keep in mind some sort of convergence.
+
+
+- objective -> take a game model and throw strategy at it in a smart way, how you build the game matters, here is what I learned that made it adaptable.
 
 - make a table telling which tables win over the other strategies -> starter cards will matter here.
+
+
 
 Speech:
 - walk through how you coded the game
@@ -42,7 +56,23 @@ Speech:
 - then talk about playing with one of the best Strategies, how can I make it interactive so I can always make the best move when playing with my friends, I want to tell it somethig and it tell me what moves to make (put this in objectives)
 - then talk about running ML models, how did it do?
 - not sure how to play against it, but it won _ percet of times based on our data
+- Goals: figure out strategies to help win, like what cards are valuable in the beginning, which ones contribute to the most wins, which cards should we not buy, etc. POINTS
+  - or figure out interesting uses for some cards
+  - expected value or interesting insights from uses of some cards
 
+  ** for initial analysis, get a list of the simulations to see what cards player works well
+
+Ask:
+* because I coded so long, I'd like to talk about designing games so they can be studies by statistics and what we need in order for that to work well and how I overcame some of those challenges
+
+Designing for stats games:
+* need output, something we can run models on
+* inputs -> how can I pass in strategies I create, how can anyone create a strategy and put it in and see how it does? -> let them play against each other
+
+TODO
+* game assistant mode, just keep your player information in there and tell it, what you should do based on what is potentially in your hand (counts) and probability
+*** useful to test strategies in the real world
+****** should be able to take the ML models and actually help me play better, that is the goal
 
 
 Game coding tactic:

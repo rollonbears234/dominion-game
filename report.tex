@@ -5,7 +5,10 @@
 %\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
 								% TeX will automatically convert eps --> pdf in pdflatex
+\graphicspath{ {assets/} }								
 \usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{float}
 
 %SetFonts
 
@@ -14,9 +17,10 @@
 
 \title{How to win playing Dominion}
 \author{Bryan Alcorn}
-\date{}							% Activate to display a given date or no date
+\date{Stats 157}							% Activate to display a given date or no date
 
 \begin{document}
+
 \maketitle
 
 \section{Dominion}
@@ -30,25 +34,141 @@ You will bring civilization to these people, uniting them under your banner.
 
 \section{Motivation}
 
+I have always wanted to try and apply statistics to a game, blending together my interests for computer science and statistics. My roommate recently introduced me to the game and we are currently battling over who can end the semester on top of the leaderboard. We are currently tied and I am hoping this game will change that. 
+
+Furthermore, I want to try and play smarter. I want to see if it is possible for me to get real world insights out of testing a game that I built. Not only do I have to build a working game of dominion, but I have to design it in a way such that it can be played automatically so that I can test it. 
+
 \section{Rules}
 
-\section{Gameplay}
+\subsection{Setup}
 
-This game uses version 2 of the base set to keep things consistent.
+The game starts by selecting the cards to be used for the game. From the 26 possible kingdom cards, you will choose any combination of 10. 
+
+Each player receives 7 copper and 3 estates as a starting deck.
+
+\subsection{Gameplay}
+
+During each turn, you draw 5 cards from your deck, after you play a card it is labeled as played. At the end of every hand, all those cards go into a discard. When you can no longer draw, shuffle the discard pile and make that the new deck. You should be able to always draw unless all cards are played. 
+
+Each hand begins with 1 buy and 1 action. 
+
+
+\subsection{There are four phases for a hand}
+
+	\begin{enumerate}
+ 		 \item \textbf{Actions} Play an action card, follow the instructions on the card, and deduct one from your action points. 
+  		 \item \textbf{Buy} a card from the board if you have enough money and deduct one from your buy points. Normally this will be just one buy per hand. 
+		 \item \textbf{Cleanup} Everything in the hand, the purchased card, and the played cards go in discard
+		 \item \textbf{Draw} Draw again to 5. You should have 5 in your hand before you play in case another action card requires you to modify your hand in some way. 
+	\end{enumerate}
+
+
+\subsection{End}
+
+The game ends if there are no more provinces left or three of the stockpiles are empty. The player with the most victory card count wins. 
 
 \section{General Approach}
 
+	\begin{enumerate}
+ 		 \item Build a playable version of the game in Python
+		 \item Calculate some basic probabilities to get an intuition into which strategies might work best or to determine some simple tricks to play better
+		 \item Modify the game so that various strategies can be played against each other with varying number of players
+		 \item Build the strategies
+		 \item Based on the best strategies, build an in game helper that tells you what to play so you can ask it what to play during a real game against friends.
+		 \item Using the simulations, generate test data to run some statistical models on the results of the games to get insight into which cards are most effective
+	\end{enumerate}
+
+\section{Game Design}
+
+The game is built using object oriented programming in Python. The game is broken down into three main operational files
+
+	\begin{itemize}
+  		\item \textbf{\textit{player.py}} - The player controls everything relating to their deck and hand. They draw, discard, play, and win. 
+  		\item \textbf{\textit{gameBoard.py}} - The board manages everything a player has to interact with. It contains the gold, the stockpiles, and methods to interact with the board. The board has a subclass called \textbf{\textit{Cards}} and each card can be played by a player on a game board. 
+		\item \textbf{\textit{play.py}} - Play manages the logic of the game. This is where you select the initial cards to play with, it checks to make sure money >= cost of a card when buying, and it also manages every turn until someone wins.  Strategies will also be added onto this to made the decisions then their player comes up. Instead of asking the player what to do, the strategies will take care of the buy or play decisions. 
+	\end{itemize}
+	
+From there, \textbf{\textit{strategies.py}} was added on as a way to attach different strategies to \textbf{\textit{play.py}} and \textbf{\textit{models.py}} is used to do tests and calculate probabilities. 
+
+\section{Command Line Interface}
+
+The game is playable through the command line with commands to buy, play, or end the turn. 
+
+\begin{figure}[H]
+\hspace*{-1.3in}
+\includegraphics[width=1.5\textwidth]{commandLine}
+\centering
+\end{figure}
+
+
+\section{Exploratory Analysis}
+
+There are $\binom{26}{10} = 5311735$ ways to set up a game with all 26 cards. \newline
+\newline
+There are $\binom{12}{10} = 66$ ways with the 12 cards. This smaller test set will make things easier to analyze and break down. \newline
+
+We know from how the deck is built and that since each player starts with 10 cards in their deck, they will go through two full hands with no actions to play. After that, assuming that player purchased an action card in the last hand, there is a 
+
+From this, there are two approaches, I might just get a throne room, which on its own does not do anything, or the player has  X percent chance of getting a throne room and another action card. 
+
+
 \section{Strategies}
+
+\subsection{Intuition}
+
+There are many strategies online that talk about effective uses of different cards and different combinations that go well together. The game becomes more complicated when you potentially \textit{Throne Room} a \textit{Smithy}. Also, considering that the game is about building a hand, you want to first buy cards that help you build faster and then buy cards that give you buys/actions/money. One a good deck is built, provinces are easier to afford. 
+
+There are two extreme strategies that should be explored in order to find a balance between the two.
+
+	\begin{enumerate}
+ 		 \item Build up actions so that the player can keep playing action cards, earning more gold, and drawing more cards and hopefull more money. This extreme is useless however if no more of the cards are money. That being said, there are seven coppers total, so with the proper action cards, it is possible to buy a province. 
+		 \item If a player only buys gold, then they only have 5 cards to get money, but the hope is that those cards are of higher value and will add up to at least 8. Actions would be helpful here since they might give more cards and in turn, more money. 
+	\end{enumerate}
+	
+Obviously a balance is required between buying money and buying action cards. This is one of the objectives of this project. 
+
+
+\subsection{Simulated Strategies}
+
+These will be our data generation tools. They will record their move and in the end, record if they win or lose. As a basic rule, they 
+
+	\begin{enumerate}
+ 		 \item \textbf{Random} Randomly chooses an action card if there is one and then buys a random action card that it can afford.
+  		 \item \textbf{Max Actions} Takes cards that lead to more and more actions and draw cards. This might help if we learn that lots of actions builds long hands with money. 
+		 \item \textbf{Max Money} Buy money whenever possible that isn't a copper. Otherwise, buy a random action
+		 \item \textbf{Balance} Maintain a balance between action cards and buying money. The rationale here is give infinite actions, those don't help much if the player has no money. And vice versa, if the other player only buys money, the might lose still because only getting money might take more time. 
+	\end{enumerate}
+
+\subsubsection{Simplifications}
+
+Only a subset of cards are being used for these simulations because they require no user input. The rest of the cards require some decision making beyond just picking a card to play. This isn't a big problem since the strategies can be expanded to include also decisions with other players. I am ignoring the rest of the cards however to ensure I get good results with a subset of cards. \\
+\\
+Copper should not be purchased, takes up one of the precious five spots in the hand. We will have random that might purchase a copper card so we will still have some player data. 
+
+\section{Simulations}
+
+Get some win results and say if they are statistically significant with some tests, get those p-values
 
 \section{Gathering Data}
 
-\section{Brief ML Overview}
+what format and how am I storing the data
+
+\section{Brief Model Overview}
+
+ML models go here
+
+\section{Risks}
+
+strategies don't product good results, also having them depend on an entire games worth for just one win/loss classification doesn't make realistic sense for scaling this approach. 
 
 \section{ML and Python}
 
 \section{Results}
 
 \section{Summary}
+
+\section{Miscellaneous}
+Put extra links to strategy pages here and stuff 
 
 %\subsection{}
 \end{document}
