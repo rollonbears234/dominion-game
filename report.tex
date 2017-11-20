@@ -9,6 +9,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{float}
+\usepackage{hyperref}
 
 %SetFonts
 
@@ -77,6 +78,16 @@ The game ends if there are no more provinces left or three of the stockpiles are
 		 \item Based on the best strategies, build an in game helper that tells you what to play so you can ask it what to play during a real game against friends.
 		 \item Using the simulations, generate test data to run some statistical models on the results of the games to get insight into which cards are most effective
 	\end{enumerate}
+
+
+\section{Goals}
+
+	\begin{enumerate}
+ 		 \item Learn about designing a game that can we can run simulations on to learn more about what actions tend to lead to victory
+		 \item Test our assumptions by making different strategies and putting them against each other to see which one is better
+		 \item Determine which cards give us the most value during a game
+	\end{enumerate}
+
 
 \section{Game Design}
 
@@ -147,11 +158,57 @@ Copper should not be purchased, takes up one of the precious five spots in the h
 
 \section{Simulations}
 
+Simulations is one of the main tools for analyzing different strategies because it allows us to play many games with varying amounts of players and strategies. From there, we can statistically say which strategy is better than the rest by running hypothesis tests on the results. To get these results, again the architecture of the game had to be modified. It was originally designed to be one game at a time, so another game mode is needed to run n numbers of games and generate win numbers from that. 
+
+\subsection{Qualitative Insights}
+
+Running the random tests against each other produces long games where provinces are rarely won. This makes sense because in order to get 8 money in a hand, the player either needs a string of actions or to have a lot of silver. This is much less likely if the hands are played at random. When a province is bought, we can look at which cards tend to be played that give the player enough money to buy the card. This will be useful for determining which cards give us the most value. 
+
+Another interesting observation that comes from looking at the simulated games, the scores are higher than normal. This comes from purchasing many estates and gardens. Since the hands tend to be larger with random, the gardens have more yield because their value increases as you build up your hand.
+
+\subsection{Win Tables}
+
+Games were player with 3 players to start. Here is an example of some of the simulation scores: 
+
+\begin{figure}[H]
+\includegraphics[width=.75\textwidth]{random_random_random}
+\centering
+\end{figure}
+
+
 Get some win results and say if they are statistically significant with some tests, get those p-values
 
 \section{Gathering Data}
 
-what format and how am I storing the data
+Data was stored in CSV files. For example, the random vs. random games had rows with values  $<Winner, Winner_Score>$. This entry was added to the CSV file after every simulation
+
+Simulations were run with game parameters in one file called \textbf{\textit{commands.in}}
+
+\begin{verbatim}
+sim
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+random,random,random
+\end{verbatim}
+
+Then, a bash script was run to run the commands over and over again
+
+\begin{verbatim}
+#!/bin/sh
+for i in `seq 1 1000`;
+        do
+                python play.py < commands.in
+        done
+\end{verbatim}
+
 
 \section{Brief Model Overview}
 
@@ -167,8 +224,32 @@ strategies don't product good results, also having them depend on an entire game
 
 \section{Summary}
 
-\section{Miscellaneous}
-Put extra links to strategy pages here and stuff 
+\section{Miscellaneous and further ideas}
+
+There are many different approaches to analyzing this game and many more questions that could have been asked. Throughout the process, I wrote down different aspects of the game that could have been tested. Here are some of the things that could be done on top of what I already did. Since the game can be easily adapted to include other modes of play and other simulations, they are not difficult to add on. \\
+
+One thing to look at is getting more information out of each simulation, right now the outputs are only who wins and the points that were scored by the winner. However, other good information might be things such as typo of victory (either based on the stockpiles or provinces) and margin of victory. These numbers could be used to figure out a ranking of scores. So this way instead of having to run a lot of simulations with different strategies, instead one could find scores of how well the simulations perform. This might help quantify how good specific modifications are to strategies. 
+\\
+\\
+\textbf{Additional modes:}\\
+A game helper mode would make all of this information practical. It would take in information about a game someone is playing and recommend a move for them. This would be useful for putting the project insights to the test by actually providing insights into a particular game. 
+\\
+\\
+\textbf{Additional things to explore time permitting:}\\
+	\begin{enumerate}
+ 		 \item Average score for each simulation
+		 \item Probability of particular hands to help guide the strategies
+		 \item more simulations
+		 \item probability models
+		 \item more ML concepts applied to Dominion
+	\end{enumerate}
+
+
+\section{Open Source}
+
+I wanted to make sure all the code can be viewed and experimented with. My github can be found here: \url{https://github.com/rollonbears234/dominion-game}. 
+
+
 
 %\subsection{}
 \end{document}

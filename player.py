@@ -38,15 +38,6 @@ class Player():
         only end turn calls this so we should have an empty hand
         """
         [self.draw() for _ in range(5)] #initially draw 5
-        for card in self.hand:
-            if card.type == "money":
-                self.money += game_board.CARD_INFO[card.name]["value"]
-
-    def recalc(self):
-        self.money = 0
-        for card in self.hand:
-            if card.type == "money":
-                self.money += game_board.CARD_INFO[card.name]["value"]
 
     def print_hand(self):
         """
@@ -77,7 +68,10 @@ class Player():
 
         for _ in range(amount):
             if len(self.deck) > 0:
-                self.hand.append(self.deck.pop(0)) #Should be using self.add
+                new_card = self.deck.pop(0)
+                if new_card.type == "money":
+                    self.money += game_board.CARD_INFO[new_card.name]["value"]
+                self.hand.append(new_card) #Should be using self.add
             else:
                 self.deck = self.discard
                 self.discard = []

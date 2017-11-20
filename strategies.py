@@ -106,7 +106,6 @@ class Strategy():
                     self.my_player.hand.pop(hand_num) #TODO only pop if it was played successfully
                     self.my_player.played.append(selected_card)
                     self.my_player.actions -= 1
-                    self.my_player.recalc()
             else:
                 buyable = self.get_can_buy(board)
                 if len(buyable) == 0:
@@ -123,7 +122,35 @@ class Strategy():
 
 
         elif self.strategy_name == "max_actions":
-            pass
+            if not buy_phase:
+                #time to play actions
+                actionable_cards = self.get_playable_cards()
+                if len(actionable_cards) == 0:
+                    self.my_player.actions = 0
+                else:
+                    if len(actionable_cards) == 1:
+                        hand_num = actionable_cards[0]
+                    else:
+                        hand_num = actionable_cards[random.randint(0,len(actionable_cards) - 1)]
+                    selected_card = self.my_player.hand[hand_num]
+                    #print("playing " + selected_card.name)
+                    selected_card.do_action(board, self.my_player)
+                    self.my_player.hand.pop(hand_num) #TODO only pop if it was played successfully
+                    self.my_player.played.append(selected_card)
+                    self.my_player.actions -= 1
+            else:
+                buyable = self.get_can_buy(board)
+                if len(buyable) == 0:
+                    #no money to buy
+                    self.my_player.buys = 0
+                    return
+                elif len(buyable) == 1:
+                    buy_num = 0
+                else:
+                    buy_num = random.randint(0,len(buyable) - 1)
+                choice = buyable[buy_num]
+                if not board.buy(choice, self.my_player):
+                    print("Unable to buy that card")
         elif self.strategy_name == "max_money":
             pass
         elif self.strategy_name == "balance":

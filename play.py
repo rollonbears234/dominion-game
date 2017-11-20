@@ -140,6 +140,19 @@ class Play():
                 print("There was a tie, first player counter wins!")
         return max_player
 
+    def get_score(self, player):
+        curr_score = 0
+        num_gardens = 0
+        player.deck_all()
+        print([card.name for card in player.deck])
+        for card in player.deck:
+            if card.name == "GARDENS":
+                num_gardens += 1
+            elif card.name in game_board.VICTORY_CARDS:
+                curr_score += game_board.CARD_INFO[card.name]["points"]
+        curr_score += num_gardens*(len(player.deck)/ 10)
+        return curr_score
+
     def play(self):
         while not self.game_board.game_over():
             #player makes a move
@@ -175,11 +188,15 @@ class Play():
                 sim_move = curr_sim.make_decision(self.game_board)
                 if sim_move== "end":
                     break
-                    
+
         print("GAME OVER!")
-        print
-        win_sim  = game_strategies[curr_strat_index].strategy_name
-        print("The winner is " + self.winner().player_name)
+
+        win_sim = self.winner()
+        print("The winner is " + win_sim.player_name)
+        with open('sim_results_random_random_random_1000.csv', 'a') as file:
+            num_province_left = 0 #FOR LATER MAYBE
+            score = self.get_score(win_sim)
+            file.write(win_sim.player_name + "," + str(score) + "\n")
 
 
 if __name__ == '__main__':
