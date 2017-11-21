@@ -166,12 +166,67 @@ Running the random tests against each other produces long games where provinces 
 
 Another interesting observation that comes from looking at the simulated games, the scores are higher than normal. This comes from purchasing many estates and gardens. Since the hands tend to be larger with random, the gardens have more yield because their value increases as you build up your hand.
 
-\subsection{Win Tables}
+\subsection{Strategies Explained}
+
+Strategies that were tested 
+
+For every strategy, I programmed some basic common sense heuristics into their decision making such as buying a province when that strategy has enough money and the basics rules of playing cards first before buying in order to build up money. 
+
+\subsubsection{Random}
+
+\subsubsection{Max Actions}
+
+\subsubsection{Max Money}
+
+\subsubsection{Balance}
+
+\subsubsection{Card Specific}
+
+Festival and Market
+
+
+
+
+\subsection{Win Charts}
 
 Games were player with 3 players to start. Here is an example of some of the simulation scores: 
+\\
+\\
+\textbf{Random} 
+\\
+
+The random strategies performed as expected. There were more outliers and the win scores were about the same. This simulation was more of pilot test to see how the simulations would interact. 
 
 \begin{figure}[H]
 \includegraphics[width=.75\textwidth]{random_random_random}
+\centering
+\end{figure}
+
+\textbf{Action vs. Money vs. Random} \\
+
+Money strategy did the best while random rarely won. From this we have an indicator that maximizing money might be a better first strategy to get money towards buying a province. It is worth noting that the action strategy tends to lead to more cards and actions, this is effective if there is money to draw, but if only actions are drawn, then more actions are not as effective as they can be. 
+
+\begin{figure}[H]
+\includegraphics[width=.75\textwidth]{action_buy_random}
+\centering
+\end{figure}
+
+
+\textbf{Balance vs. Action vs. Money vs. Random}\\
+
+Balance takes on some of the flaws of the action strategy. Thus, it sits in-between the best strategy so far, Max Money, and the okay action strategy. 
+
+\begin{figure}[H]
+\includegraphics[width=.75\textwidth]{all_strat}
+\centering
+\end{figure}
+
+\textbf{Festival vs. Market}\\
+
+While market is slightly higher, they are similar enough that there is probably no significant difference. This will be tested in the hypothesis tests. 
+
+\begin{figure}[H]
+\includegraphics[width=.75\textwidth]{festival_market}
 \centering
 \end{figure}
 
@@ -224,6 +279,14 @@ strategies don't product good results, also having them depend on an entire game
 
 \section{Summary}
 
+\section{Coding Reflection}
+
+	\begin{enumerate}
+ 		 \item Testing framework should be part of the design upfront. I had to test most things manually which was not as efficient as it could have been and it doesn't let me catch as many bugs. What was useful was simulations which caught a lot of errors. 
+	\end{enumerate}
+
+
+
 \section{Miscellaneous and further ideas}
 
 There are many different approaches to analyzing this game and many more questions that could have been asked. Throughout the process, I wrote down different aspects of the game that could have been tested. Here are some of the things that could be done on top of what I already did. Since the game can be easily adapted to include other modes of play and other simulations, they are not difficult to add on. \\
@@ -232,7 +295,11 @@ One thing to look at is getting more information out of each simulation, right n
 \\
 \\
 \textbf{Additional modes:}\\
-A game helper mode would make all of this information practical. It would take in information about a game someone is playing and recommend a move for them. This would be useful for putting the project insights to the test by actually providing insights into a particular game. 
+A game helper mode would make all of this information practical. It would take in information about a game someone is playing and recommend a move for them. This would be useful for putting the project insights to the test by actually providing insights into a particular game. Another mode would be person versus computer strategy mode where individuals can play against their strategies. 
+\\
+\\
+\textbf{Additional Strategies:}\\
+There are many more strategies that can be tried to find the best solution. We could run a simulation to see if Village is better than Cellar. This is fun for answering simple queries like "is card x better than card y," but to really figure out more into an optimal strategy, we need to do more machine learning to figure out our best moves. 
 \\
 \\
 \textbf{Additional things to explore time permitting:}\\
@@ -241,8 +308,28 @@ A game helper mode would make all of this information practical. It would take i
 		 \item Probability of particular hands to help guide the strategies
 		 \item more simulations
 		 \item probability models
-		 \item more ML concepts applied to Dominion
+		 \item more ML concepts applied to Dominion, the goal is to maximize points and we would train on the moves in a game that lead to increased points only if that game leads to a win
+		 \item Redesign the game in some aspects, making the game modes more modular and the simulations easier to adjust
+		 \item Program more cards to auto play so simulations still work
 	\end{enumerate}
+	
+
+TO ADD
+based on the cost of village and lab, I said cards are more valuable than actions if they are both present (smitty)
+
+how I designed the strategies, actions vs money and always buying a province. How the base should be better than random but its a good first thing. 
+
+make it so each strategy buys a province if they can and redo your simulations!
+
+k means
+
+significant tests
+
+run some cards against each other, is festival better than market, obviously a combo is probably best but maybe it can help make a better first move
+
+check this doc with Grammarly - test run
+
+add in your caveots, like these scores are unrealistic because they rack up points rather than going for the kill
 
 
 \section{Open Source}

@@ -72,6 +72,8 @@ class Player():
                 if new_card.type == "money":
                     self.money += game_board.CARD_INFO[new_card.name]["value"]
                 self.hand.append(new_card) #Should be using self.add
+            elif len(self.deck) == 0 and len(self.discard) == 0:
+                break
             else:
                 self.deck = self.discard
                 self.discard = []

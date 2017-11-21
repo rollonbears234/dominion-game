@@ -144,7 +144,7 @@ class Play():
         curr_score = 0
         num_gardens = 0
         player.deck_all()
-        print([card.name for card in player.deck])
+        #print([card.name for card in player.deck])
         for card in player.deck:
             if card.name == "GARDENS":
                 num_gardens += 1
@@ -192,10 +192,11 @@ class Play():
         print("GAME OVER!")
 
         win_sim = self.winner()
-        print("The winner is " + win_sim.player_name)
-        with open('sim_results_random_random_random_1000.csv', 'a') as file:
+        print("The winner is " + win_sim.player_name )
+        with open('festival_v_market.csv', 'a') as file:
             num_province_left = 0 #FOR LATER MAYBE
             score = self.get_score(win_sim)
+            print("player score was " + str(score))
             file.write(win_sim.player_name + "," + str(score) + "\n")
 
 
