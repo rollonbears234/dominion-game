@@ -122,6 +122,7 @@ class Play():
         """
         max_player = self.game_board.players[0]
         max_score = 0
+        win_margin = 0
         for player in self.game_board.players:
             curr_score = 0
             num_gardens = 0
@@ -134,11 +135,12 @@ class Play():
             curr_score += num_gardens*(len(player.deck)/ 10)
 
             if curr_score > max_score:
+                win_margin = curr_score - max_score
                 max_score = curr_score
                 max_player = player
             elif curr_score == max_score:
                 print("There was a tie, first player counter wins!")
-        return max_player
+        return max_player, win_margin
 
     def get_score(self, player):
         curr_score = 0
@@ -191,13 +193,13 @@ class Play():
 
         print("GAME OVER!")
 
-        win_sim = self.winner()
+        win_sim, margin = self.winner()
         print("The winner is " + win_sim.player_name )
-        with open('festival_v_market.csv', 'a') as file:
+        with open('bal_act_mon_fest.csv', 'a') as file: 
             num_province_left = 0 #FOR LATER MAYBE
             score = self.get_score(win_sim)
-            print("player score was " + str(score))
-            file.write(win_sim.player_name + "," + str(score) + "\n")
+            print("player score was " + str(score) + " and margin was:" + str(margin))
+            file.write(win_sim.player_name + "," + str(score) + "," + str(margin) + "\n")
 
 
 if __name__ == '__main__':

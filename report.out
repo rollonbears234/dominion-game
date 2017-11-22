@@ -16,12 +16,20 @@
 \BOOKMARK [3][-]{subsubsection.9.2.1}{Simplifications}{subsection.9.2}% 16
 \BOOKMARK [1][-]{section.10}{Simulations}{}% 17
 \BOOKMARK [2][-]{subsection.10.1}{Qualitative Insights}{section.10}% 18
-\BOOKMARK [2][-]{subsection.10.2}{Win Tables}{section.10}% 19
-\BOOKMARK [1][-]{section.11}{Gathering Data}{}% 20
-\BOOKMARK [1][-]{section.12}{Brief Model Overview}{}% 21
-\BOOKMARK [1][-]{section.13}{Risks}{}% 22
-\BOOKMARK [1][-]{section.14}{ML and Python}{}% 23
-\BOOKMARK [1][-]{section.15}{Results}{}% 24
-\BOOKMARK [1][-]{section.16}{Summary}{}% 25
-\BOOKMARK [1][-]{section.17}{Miscellaneous and further ideas}{}% 26
-\BOOKMARK [1][-]{section.18}{Open Source}{}% 27
+\BOOKMARK [2][-]{subsection.10.2}{Strategies Explained}{section.10}% 19
+\BOOKMARK [3][-]{subsubsection.10.2.1}{Random}{subsection.10.2}% 20
+\BOOKMARK [3][-]{subsubsection.10.2.2}{Max Actions}{subsection.10.2}% 21
+\BOOKMARK [3][-]{subsubsection.10.2.3}{Max Money}{subsection.10.2}% 22
+\BOOKMARK [3][-]{subsubsection.10.2.4}{Balance}{subsection.10.2}% 23
+\BOOKMARK [3][-]{subsubsection.10.2.5}{Card Specific}{subsection.10.2}% 24
+\BOOKMARK [2][-]{subsection.10.3}{Win Charts}{section.10}% 25
+\BOOKMARK [1][-]{section.11}{Gathering Data}{}% 26
+\BOOKMARK [1][-]{section.12}{Brief Model Overview}{}% 27
+\BOOKMARK [2][-]{subsection.12.1}{K-Means}{section.12}% 28
+\BOOKMARK [2][-]{subsection.12.2}{Hypothesis Testing}{section.12}% 29
+\BOOKMARK [1][-]{section.13}{Risks}{}% 30
+\BOOKMARK [1][-]{section.14}{Results}{}% 31
+\BOOKMARK [1][-]{section.15}{Summary}{}% 32
+\BOOKMARK [1][-]{section.16}{Coding Reflection}{}% 33
+\BOOKMARK [1][-]{section.17}{Miscellaneous and further ideas}{}% 34
+\BOOKMARK [1][-]{section.18}{Open Source}{}% 35

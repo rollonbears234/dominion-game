@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  19 NOV 2017 16:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  21 NOV 2017 22:54
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -388,7 +388,7 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 97.
 
-<assets/commandLine.png, id=136, 781.92125pt x 754.82pt>
+<assets/commandLine.png, id=168, 781.92125pt x 754.82pt>
 File: assets/commandLine.png Graphic file (type png)
 
 <use assets/commandLine.png>
@@ -418,51 +418,118 @@ Underfull \hbox (badness 10000) in paragraph at lines 155--158
 
  []
 
-[6] <assets/random_random_random.png, id=170, 482.80376pt x 469.755pt>
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 192--197
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 192--197
+
+ []
+
+<assets/random_random_random.png, id=202, 484.81125pt x 463.7325pt>
 File: assets/random_random_random.png Graphic file (type png)
 
 <use assets/random_random_random.png>
-Package pdftex.def Info: assets/random_random_random.png used on input line 174
+Package pdftex.def Info: assets/random_random_random.png used on input line 201
 .
-(pdftex.def)             Requested size: 322.50346pt x 313.79523pt.
- [7 <./assets/random_random_random.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 229--230
+(pdftex.def)             Requested size: 322.50346pt x 308.49852pt.
+ [7]
+Underfull \hbox (badness 10000) in paragraph at lines 205--206
 
  []
 
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 231--239
+<assets/action_buy_random.png, id=208, 485.815pt x 467.7475pt>
+File: assets/action_buy_random.png Graphic file (type png)
+
+<use assets/action_buy_random.png>
+Package pdftex.def Info: assets/action_buy_random.png used on input line 210.
+(pdftex.def)             Requested size: 322.50346pt x 310.50574pt.
+ [8 <./assets/random_random_random.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
+
+ []
+
+<assets/all_strat.png, id=214, 484.81125pt x 466.74374pt>
+File: assets/all_strat.png Graphic file (type png)
+
+<use assets/all_strat.png>
+Package pdftex.def Info: assets/all_strat.png used on input line 220.
+(pdftex.def)             Requested size: 322.50346pt x 310.50175pt.
+ [9 <./assets/action_buy_random.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 224--225
+
+ []
+
+<assets/festival_market.png, id=220, 487.8225pt x 468.75125pt>
+File: assets/festival_market.png Graphic file (type png)
+
+<use assets/festival_market.png>
+Package pdftex.def Info: assets/festival_market.png used on input line 229.
+(pdftex.def)             Requested size: 322.50346pt x 309.89891pt.
+ [10 <./assets/all_strat.png>] [11 <./assets/festival_market.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 274--275
+
+ []
+
+<assets/actual_points.png, id=234, 486.81876pt x 467.7475pt>
+File: assets/actual_points.png Graphic file (type png)
+
+<use assets/actual_points.png>
+Package pdftex.def Info: assets/actual_points.png used on input line 287.
+(pdftex.def)             Requested size: 210.70462pt x 202.44788pt.
+
+<assets/kmeans.png, id=235, 486.81876pt x 467.7475pt>
+File: assets/kmeans.png Graphic file (type png)
+ <use assets/kmeans.png>
+Package pdftex.def Info: assets/kmeans.png used on input line 290.
+(pdftex.def)             Requested size: 210.70462pt x 202.44788pt.
+
+[12 <./assets/actual_points.png> <./assets/kmeans.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 320--321
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 231--239
+Underfull \hbox (badness 10000) in paragraph at lines 322--334
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 231--239
+Underfull \hbox (badness 10000) in paragraph at lines 322--334
 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 255.
-[9] [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 255.
+
+Underfull \hbox (badness 10000) in paragraph at lines 322--334
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 322--334
+
+ []
+
+[13] [14]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 370.
+ [15]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 370.
  (./report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 255.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 255.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 370.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 370.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: E0A2FE914671147C6FE185C4E63816F9;1460.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 255.
+(rerunfilecheck)             Checksum: 1ABE99FF63BC207961FC4D73EDD3D414;2021.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 370.
  ) 
 Here is how much of TeX's memory you used:
- 6550 strings out of 493014
- 94375 string characters out of 6133351
- 187071 words of memory out of 5000000
- 9959 multiletter control sequences out of 15000+600000
+ 6599 strings out of 493014
+ 95372 string characters out of 6133351
+ 188076 words of memory out of 5000000
+ 9987 multiletter control sequences out of 15000+600000
  12225 words of font info for 46 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 29i,6n,28p,605b,407s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 29i,10n,28p,605b,441s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb
@@ -476,10 +543,10 @@ al/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
 texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/te
 xlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (10 pages, 415876 bytes).
+Output written on report.pdf (15 pages, 602778 bytes).
 PDF statistics:
- 257 PDF objects out of 1000 (max. 8388607)
- 225 compressed objects within 3 object streams
- 62 named destinations out of 1000 (max. 500000)
- 227 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 326 PDF objects out of 1000 (max. 8388607)
+ 279 compressed objects within 3 object streams
+ 78 named destinations out of 1000 (max. 500000)
+ 316 words of extra memory for PDF output out of 10000 (max. 10000000)
 

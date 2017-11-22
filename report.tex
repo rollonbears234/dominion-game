@@ -16,7 +16,7 @@
 %SetFonts
 
 
-\title{How to win playing Dominion}
+\title{Dominion: A Board Game Breakdown}
 \author{Bryan Alcorn}
 \date{Stats 157}							% Activate to display a given date or no date
 
@@ -223,7 +223,7 @@ Balance takes on some of the flaws of the action strategy. Thus, it sits in-betw
 
 \textbf{Festival vs. Market}\\
 
-While market is slightly higher, they are similar enough that there is probably no significant difference. This will be tested in the hypothesis tests. 
+While market is slightly higher, they are similar enough that there is probably no significant difference. This will be tested in the hypothesis tests. Notice that the scores are lower for these than the other tests. Lower scores might indicate quicker wins. A quick win means someone is able to buy a province faster than normal. 
 
 \begin{figure}[H]
 \includegraphics[width=.75\textwidth]{festival_market}
@@ -267,13 +267,41 @@ for i in `seq 1 1000`;
 
 \section{Brief Model Overview}
 
-ML models go here
+Can talk about the models I used to for strategies
+
+\subsection{K-Means}
+
+\textbf{Errors}\\
+
+\begin{center}
+\begin{tabular}{||c | c ||}
+\hline
+ \textbf{withinss} & 8833.396 10936.840 24079.819 14742.027 \\ 
+ \textbf{betweenss} & 192660.3 \\  
+ \hline
+\end{tabular}
+\end{center}
+
+\begin{figure}[H] \centering
+   \begin{minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{actual_points}}
+   \end{minipage}
+   \begin {minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{kmeans}}
+   \end{minipage}
+\end{figure}
+
+\subsection{Hypothesis Testing}
+
+Using hypothesis tests, we can now answers questions like, 'Is playing festival on average a better move than market?' or 'Is strategy A, on average, better than strategy B?'
 
 \section{Risks}
 
-strategies don't product good results, also having them depend on an entire games worth for just one win/loss classification doesn't make realistic sense for scaling this approach. 
-
-\section{ML and Python}
+Strategies don't produce good results for testing because having the entire game come down to just just one win/loss classification doesn't make realistic sense for scaling this approach. Every move could be taken into consideration for more accurate results. There would need to be a way to measure if each move is good or bad though. 
+\\
+The action strategy might not be good because it could be more of a support role, meaning it works well in combination to other cards, but not by itself against a money strategy. This also accounts for the weaknesses in balance. To fix this, strategies need to be smarter with more rules to discover these additional benefits from pairing action cards. Money cards don't pair well which makes a direct comparison harder. 
+\\
+Not testing more of the cards, but would make the simulations much more complicated. This was still a good approach for understanding the relationship between drawing, buying money, and buying cards that give actions.
 
 \section{Results}
 
@@ -308,7 +336,7 @@ There are many more strategies that can be tried to find the best solution. We c
 		 \item Probability of particular hands to help guide the strategies
 		 \item more simulations
 		 \item probability models
-		 \item more ML concepts applied to Dominion, the goal is to maximize points and we would train on the moves in a game that lead to increased points only if that game leads to a win
+		 \item Incorporate ML concepts  to Dominion, the goal is to maximize points and we would train on the moves in a game that lead to increased points only if that game leads to a win
 		 \item Redesign the game in some aspects, making the game modes more modular and the simulations easier to adjust
 		 \item Program more cards to auto play so simulations still work
 	\end{enumerate}
