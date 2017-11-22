@@ -122,6 +122,10 @@ We know from how the deck is built and that since each player starts with 10 car
 
 From this, there are two approaches, I might just get a throne room, which on its own does not do anything, or the player has  X percent chance of getting a throne room and another action card. 
 
+Another approach I took for strategy was comparing card effects to cost. For example, the village card's effects are: \begin{verbatim} +1 Card +2 Actions 3 Cost \end{verbatim}  While the Laboratory's effects are: \begin{verbatim} +2 Card +1 Actions 5 Cost \end{verbatim}
+Since the only difference is the effect numbers are switches, we can conclude that buying extra cards is more valuable than extra actions. This helped design the maximum action strategies to help determine which cards should be prioritized.
+
+
 
 \section{Strategies}
 
@@ -150,6 +154,106 @@ These will be our data generation tools. They will record their move and in the 
 		 \item \textbf{Balance} Maintain a balance between action cards and buying money. The rationale here is give infinite actions, those don't help much if the player has no money. And vice versa, if the other player only buys money, the might lose still because only getting money might take more time. 
 	\end{enumerate}
 
+\subsection{Strategies Implemented}
+
+For every strategy, I programmed some basic common sense heuristics into their decision making such as buying a province when that strategy has enough money and the basics rules of playing cards first before buying in order to build up money. Bellow is the structure used to add a strategy. It consists of a make and buy if statement as well as an if statement that determines the strategy to be used. This is based on the strategy name of the strategy object. See the github linked at the end of the report for more details.
+\\
+\\
+\textbf{Make Decision Implementation with the random strategy}
+\begin{verbatim}
+
+    def make_decision(self, board):
+        """
+        this simply just needs to do a buy or play decision
+        Generally we play actions until those are 0 or 1
+        then buy depending on our strategy
+        After that end turn if no buys or actions
+        if they have >= 8  coins, will buy a province
+
+        basically the simulations either choose an action or a buy
+        """
+        #this is true for all strategies
+        buy_phase = False
+        if self.my_player.buys == 0:
+            self.my_player.end_turn()
+            return "end"
+        if self.my_player.actions == 0:
+            buy_phase = True
+
+        #self.print_board(board)
+        actionable_cards = self.get_playable_cards()
+        buyable = self.get_can_buy(board)
+        #now strategy specific
+        if self.strategy_name == "random":
+            if not buy_phase:
+                #time to play actions
+                if len(actionable_cards) == 0:
+                    self.my_player.actions = 0
+                else:
+                    if len(actionable_cards) == 1:
+                        hand_num = actionable_cards[0]
+                    else:
+                        hand_num = actionable_cards[random.randint(0,
+                        					len(actionable_cards) - 1)]
+                    selected_card = self.my_player.hand[hand_num]
+                    #print("playing " + selected_card.name)
+                    try:
+                        selected_card.do_action(board, self.my_player)
+                        self.my_player.hand.pop(hand_num) 
+                        self.my_player.played.append(selected_card)
+                        self.my_player.actions -= 1
+                    except Exception as e:
+                        self.my_player.actions = 0
+                        print(e)
+                        print("cannot play that card, moving to buys instead")
+            else:
+                if len(buyable) == 0:
+                    #no money to buy
+                    self.my_player.buys = 0
+                    return
+                elif "PROVINCE" in buyable:
+                    buy_num = buyable.index("PROVINCE")
+                elif len(buyable) == 1:
+                    buy_num = 0
+                else:
+                    buy_num = random.randint(0,len(buyable) - 1)
+
+                choice = buyable[buy_num]
+                if not board.buy(choice, self.my_player):
+                    print("Unable to buy that card")
+\end{verbatim}
+
+\subsubsection{Random}
+
+This strategy simply uses a random number generator to select a card from the available cards. I created two helper functions, \textit{get\_can\_buy} and \textit{get\_playable\_cards}, that tell the strategy what the options are. From those lists, the random number generator randomly selects a card. This includes victory cards, kingdom cards, and money piles. 
+
+\subsubsection{Max Actions}
+
+The cards listed bellow are the best cards for getting actions. This was determined by the number of actions that those cards give as well as pairing that with drawing cards. Drawing cards can lead to more actions, but only if that leads to another action card. SMITHY lets the player draw 3, but since they would be out of actions, it is ranked lower than cards that have draw effects and action effects. 
+
+The strategy looks at every card in the \textit{get\_can\_buy} and \textit{get\_playable\_cards} piles, and selects the card with the lowest index in the list bellow. 
+
+\begin{verbatim}
+max_action_cards = ["LABORATORY", "FESTIVAL", "MARKET", 
+		"VILLAGE", "SMITHY", "VASSAL", "MOAT"]
+\end{verbatim}
+
+\subsubsection{Max Money}
+
+This strategy was implemented similarly to max actions, except cards that yield the most money value are first. Gold yields 3 and festival yields 2 and so on. It is worth noting that this order could be experimented with to see if the results improve. 
+
+\begin{verbatim}
+max_money_cards = ["GOLD", "SILVER", "MONEYLENDER", "FESTIVAL", "MARKET", "COPPER"]
+\end{verbatim}
+
+\subsubsection{Balance}
+
+This strategy counts the number of cards in my hand, deck, and discard that are either part of the max\_action\_cards or the max\_money\_cards. Depending on which count is higher, the balancer will play the other strategy to try to fix the balance. For example, if the player has more max\_money\_cards, the balancer will play a max\_action\_cards strategy. 
+
+\subsubsection{Card Specific}
+
+Festival and Market
+
 \subsubsection{Simplifications}
 
 Only a subset of cards are being used for these simulations because they require no user input. The rest of the cards require some decision making beyond just picking a card to play. This isn't a big problem since the strategies can be expanded to include also decisions with other players. I am ignoring the rest of the cards however to ensure I get good results with a subset of cards. \\
@@ -165,27 +269,6 @@ Simulations is one of the main tools for analyzing different strategies because 
 Running the random tests against each other produces long games where provinces are rarely won. This makes sense because in order to get 8 money in a hand, the player either needs a string of actions or to have a lot of silver. This is much less likely if the hands are played at random. When a province is bought, we can look at which cards tend to be played that give the player enough money to buy the card. This will be useful for determining which cards give us the most value. 
 
 Another interesting observation that comes from looking at the simulated games, the scores are higher than normal. This comes from purchasing many estates and gardens. Since the hands tend to be larger with random, the gardens have more yield because their value increases as you build up your hand.
-
-\subsection{Strategies Explained}
-
-Strategies that were tested 
-
-For every strategy, I programmed some basic common sense heuristics into their decision making such as buying a province when that strategy has enough money and the basics rules of playing cards first before buying in order to build up money. 
-
-\subsubsection{Random}
-
-\subsubsection{Max Actions}
-
-\subsubsection{Max Money}
-
-\subsubsection{Balance}
-
-\subsubsection{Card Specific}
-
-Festival and Market
-
-
-
 
 \subsection{Win Charts}
 
@@ -223,7 +306,7 @@ Balance takes on some of the flaws of the action strategy. Thus, it sits in-betw
 
 \textbf{Festival vs. Market}\\
 
-While market is slightly higher, they are similar enough that there is probably no significant difference. This will be tested in the hypothesis tests. Notice that the scores are lower for these than the other tests. Lower scores might indicate quicker wins. A quick win means someone is able to buy a province faster than normal. 
+While market is slightly higher, they are similar enough that there is probably no significant difference. This will be tested in the hypothesis tests. Notice that the scores are lower for these than the other tests. Lower scores might indicate quicker wins. A quick win means someone is able to buy a province faster than normal. These cards probably work better in combination, but at least the test sheds some light that they are relatively equally balances. This indicates that their usage must depend on the situation and that by themselves, they don't differ. Their value most likely comes from working towards getting other cards. For example, getting 2 gold from festival could help push a players money count to 8 in order to purchase a Province.
 
 \begin{figure}[H]
 \includegraphics[width=.75\textwidth]{festival_market}
@@ -379,15 +462,7 @@ how I designed the strategies, actions vs money and always buying a province. Ho
 
 make it so each strategy buys a province if they can and redo your simulations!
 
-k means
-
-significant tests
-
-run some cards against each other, is festival better than market, obviously a combo is probably best but maybe it can help make a better first move
-
 check this doc with Grammarly - test run
-
-add in your caveots, like these scores are unrealistic because they rack up points rather than going for the kill
 
 
 \section{Open Source}

@@ -13,16 +13,16 @@
 \BOOKMARK [1][-]{section.9}{Strategies}{}% 13
 \BOOKMARK [2][-]{subsection.9.1}{Intuition}{section.9}% 14
 \BOOKMARK [2][-]{subsection.9.2}{Simulated Strategies}{section.9}% 15
-\BOOKMARK [3][-]{subsubsection.9.2.1}{Simplifications}{subsection.9.2}% 16
-\BOOKMARK [1][-]{section.10}{Simulations}{}% 17
-\BOOKMARK [2][-]{subsection.10.1}{Qualitative Insights}{section.10}% 18
-\BOOKMARK [2][-]{subsection.10.2}{Strategies Explained}{section.10}% 19
-\BOOKMARK [3][-]{subsubsection.10.2.1}{Random}{subsection.10.2}% 20
-\BOOKMARK [3][-]{subsubsection.10.2.2}{Max Actions}{subsection.10.2}% 21
-\BOOKMARK [3][-]{subsubsection.10.2.3}{Max Money}{subsection.10.2}% 22
-\BOOKMARK [3][-]{subsubsection.10.2.4}{Balance}{subsection.10.2}% 23
-\BOOKMARK [3][-]{subsubsection.10.2.5}{Card Specific}{subsection.10.2}% 24
-\BOOKMARK [2][-]{subsection.10.3}{Win Charts}{section.10}% 25
+\BOOKMARK [2][-]{subsection.9.3}{Strategies Implemented}{section.9}% 16
+\BOOKMARK [3][-]{subsubsection.9.3.1}{Random}{subsection.9.3}% 17
+\BOOKMARK [3][-]{subsubsection.9.3.2}{Max Actions}{subsection.9.3}% 18
+\BOOKMARK [3][-]{subsubsection.9.3.3}{Max Money}{subsection.9.3}% 19
+\BOOKMARK [3][-]{subsubsection.9.3.4}{Balance}{subsection.9.3}% 20
+\BOOKMARK [3][-]{subsubsection.9.3.5}{Card Specific}{subsection.9.3}% 21
+\BOOKMARK [3][-]{subsubsection.9.3.6}{Simplifications}{subsection.9.3}% 22
+\BOOKMARK [1][-]{section.10}{Simulations}{}% 23
+\BOOKMARK [2][-]{subsection.10.1}{Qualitative Insights}{section.10}% 24
+\BOOKMARK [2][-]{subsection.10.2}{Win Charts}{section.10}% 25
 \BOOKMARK [1][-]{section.11}{Gathering Data}{}% 26
 \BOOKMARK [1][-]{section.12}{Brief Model Overview}{}% 27
 \BOOKMARK [2][-]{subsection.12.1}{K-Means}{section.12}% 28
