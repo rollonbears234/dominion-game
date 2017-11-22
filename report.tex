@@ -295,6 +295,36 @@ Can talk about the models I used to for strategies
 
 Using hypothesis tests, we can now answers questions like, 'Is playing festival on average a better move than market?' or 'Is strategy A, on average, better than strategy B?'
 
+\begin{verbatim}
+#now strategy differences
+colnames(win_all) <- c("Name", "Points")
+money_v_random = win_all[(win_all$Name == "sim-max_money-2" | 
+		win_all$Name == "sim-random-3"), ]
+
+counts = c()
+for (item in money_v_random$Name) {
+  if (item == "sim-max_money-2") {
+    counts = c(counts, 1)
+  } else {
+    counts = c(counts, 0)
+  }
+}
+money_v_random$counts = counts
+money_v_random$Name <- droplevels(money_v_random$Name)
+prop.test(table(money_v_random$counts, money_v_random$Name), correct = FALSE)
+\end{verbatim}
+
+\subsubsection{Results}
+
+\begin{figure}[H] \centering
+   \begin{minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{mark_fest_test}}
+   \end{minipage}
+   \begin {minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{mon_rand_test}}
+   \end{minipage}
+\end{figure}
+
 \section{Risks}
 
 Strategies don't produce good results for testing because having the entire game come down to just just one win/loss classification doesn't make realistic sense for scaling this approach. Every move could be taken into consideration for more accurate results. There would need to be a way to measure if each move is good or bad though. 

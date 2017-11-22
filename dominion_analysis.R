@@ -1,4 +1,5 @@
 library(ggplot2)
+library(MASS)
 #Random Random Random
 win_random_random_random = read.csv("sim_results_random_random_random_1000.csv", header = FALSE)
 
@@ -60,7 +61,40 @@ market_data = fest_v_market[fest_v_market$Name == "sim-market-1", ]
 summary(festival_data)
 summary(market_data)
 
+
 #the points clearly aren't statistically different, but number of wins looks like it might be
 #we will look at win percentage
 
+n = length(fest_v_market$Points)
+prop_fest = length((festival_data$Points)) / n
+prop_market = length((market_data$Points)) / n
 
+counts = c()
+for (item in fest_v_market$Name) {
+  if (item == "sim-market-1") {
+    counts = c(counts, 1)
+  } else {
+    counts = c(counts, 0)
+  }
+}
+
+
+fest_v_market$counts = counts
+prop.test(table(fest_v_market$counts, fest_v_market$Name), correct = FALSE)
+
+
+#now strategy differences
+colnames(win_all) <- c("Name", "Points")
+money_v_random = win_all[(win_all$Name == "sim-max_money-2" | win_all$Name == "sim-random-3"), ]
+
+counts = c()
+for (item in money_v_random$Name) {
+  if (item == "sim-max_money-2") {
+    counts = c(counts, 1)
+  } else {
+    counts = c(counts, 0)
+  }
+}
+money_v_random$counts = counts
+money_v_random$Name <- droplevels(money_v_random$Name)
+prop.test(table(money_v_random$counts, money_v_random$Name), correct = FALSE)
