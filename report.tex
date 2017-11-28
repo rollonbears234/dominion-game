@@ -35,7 +35,7 @@ You will bring civilization to these people, uniting them under your banner.
 
 \section{Motivation}
 
-I have always wanted to try and apply statistics to a game, blending together my interests for computer science and statistics. My roommate recently introduced me to the game and we are currently battling over who can end the semester on top of the leaderboard. We are currently tied and I am hoping this game will change that. 
+I have always wanted to try and apply statistics to a game, blending my interests for computer science and statistics. My roommate recently introduced me to the game, and we are currently battling over who can end the semester on top of the leaderboard. We are currently tied and I am hoping this game will change that. 
 
 Furthermore, I want to try and play smarter. I want to see if it is possible for me to get real world insights out of testing a game that I built. Not only do I have to build a working game of dominion, but I have to design it in a way such that it can be played automatically so that I can test it. 
 
@@ -54,11 +54,11 @@ During each turn, you draw 5 cards from your deck, after you play a card it is l
 Each hand begins with 1 buy and 1 action. 
 
 
-\subsection{There are four phases for a hand}
+\subsection{There are four phases in a hand}
 
 	\begin{enumerate}
  		 \item \textbf{Actions} Play an action card, follow the instructions on the card, and deduct one from your action points. 
-  		 \item \textbf{Buy} a card from the board if you have enough money and deduct one from your buy points. Normally this will be just one buy per hand. 
+  		 \item \textbf{Buy} a card from the board if you have enough money and deduct one from your buy points. Usually this will be just one buy per hand. 
 		 \item \textbf{Cleanup} Everything in the hand, the purchased card, and the played cards go in discard
 		 \item \textbf{Draw} Draw again to 5. You should have 5 in your hand before you play in case another action card requires you to modify your hand in some way. 
 	\end{enumerate}
@@ -83,7 +83,7 @@ The game ends if there are no more provinces left or three of the stockpiles are
 \section{Goals}
 
 	\begin{enumerate}
- 		 \item Learn about designing a game that can we can run simulations on to learn more about what actions tend to lead to victory
+ 		 \item Learn about designing a game where we can run simulations on for learning more about what actions tend to lead to victory
 		 \item Test our assumptions by making different strategies and putting them against each other to see which one is better
 		 \item Determine which cards give us the most value during a game
 	\end{enumerate}
@@ -131,12 +131,12 @@ Since the only difference is the effect numbers are switches, we can conclude th
 
 \subsection{Intuition}
 
-There are many strategies online that talk about effective uses of different cards and different combinations that go well together. The game becomes more complicated when you potentially \textit{Throne Room} a \textit{Smithy}. Also, considering that the game is about building a hand, you want to first buy cards that help you build faster and then buy cards that give you buys/actions/money. One a good deck is built, provinces are easier to afford. 
+There are many strategies online that talk about effective uses of different cards and different combinations that go well together. The game becomes more complicated when you potentially \textit{Throne Room} a \textit{Smithy} for combinations. Also, considering that the game is about building a hand, you want to first buy cards that help you build faster and then buy cards that give you buys/actions/money. Once a good deck is built, provinces are easier to afford. 
 
-There are two extreme strategies that should be explored in order to find a balance between the two.
+Two extreme strategies should be explored in order to find a balance between the two.
 
 	\begin{enumerate}
- 		 \item Build up actions so that the player can keep playing action cards, earning more gold, and drawing more cards and hopefull more money. This extreme is useless however if no more of the cards are money. That being said, there are seven coppers total, so with the proper action cards, it is possible to buy a province. 
+ 		 \item Build up actions so that the player can keep playing action cards, earning more gold, and drawing more cards and hopefully more money. This extreme is useless however if no more of the cards are money. That being said, there are seven coppers total, so with the proper action cards, it is possible to buy a province. 
 		 \item If a player only buys gold, then they only have 5 cards to get money, but the hope is that those cards are of higher value and will add up to at least 8. Actions would be helpful here since they might give more cards and in turn, more money. 
 	\end{enumerate}
 	
@@ -149,14 +149,14 @@ These will be our data generation tools. They will record their move and in the 
 
 	\begin{enumerate}
  		 \item \textbf{Random} Randomly chooses an action card if there is one and then buys a random action card that it can afford.
-  		 \item \textbf{Max Actions} Takes cards that lead to more and more actions and draw cards. This might help if we learn that lots of actions builds long hands with money. 
+  		 \item \textbf{Max Actions} Takes cards that lead to more and more actions and draw cards. This might help if we learn that lots of actions build long hands with money. 
 		 \item \textbf{Max Money} Buy money whenever possible that isn't a copper. Otherwise, buy a random action
-		 \item \textbf{Balance} Maintain a balance between action cards and buying money. The rationale here is give infinite actions, those don't help much if the player has no money. And vice versa, if the other player only buys money, the might lose still because only getting money might take more time. 
+		 \item \textbf{Balance} Maintain a balance between action cards and buying money. If a player has infinite actions, those don't help much if the player has no money and money can only go so far if the player has no action cards. If the other player only buys money, they might lose still because only getting money might take more time or their hand will fill up with coppers and the player will have a harder time buying Provinces. 
 	\end{enumerate}
 
 \subsection{Strategies Implemented}
 
-For every strategy, I programmed some basic common sense heuristics into their decision making such as buying a province when that strategy has enough money and the basics rules of playing cards first before buying in order to build up money. Bellow is the structure used to add a strategy. It consists of a make and buy if statement as well as an if statement that determines the strategy to be used. This is based on the strategy name of the strategy object. See the github linked at the end of the report for more details.
+For every strategy, I programmed some basic common sense heuristics into their decision making such as buying a province when that strategy has enough money and the basics rules of playing cards first before buying in order to build up money. These might not always be true, for example, early in a game, if a player gets lucky and can buy a province, that might not be the best move since it puts the deck out of balance and does not allow for building. For future implementations, the game should be split into a building stage and a gathering stage focused on victory cards. Bellow is the structure used to add a strategy. It consists of a make and buy if statement as well as an if statement that determines the strategy to be used. This is based on the strategy name of the strategy object. See the github linked at the end of the report for more details.
 \\
 \\
 \textbf{Make Decision Implementation with the random strategy}
@@ -229,9 +229,9 @@ This strategy simply uses a random number generator to select a card from the av
 
 \subsubsection{Max Actions}
 
-The cards listed bellow are the best cards for getting actions. This was determined by the number of actions that those cards give as well as pairing that with drawing cards. Drawing cards can lead to more actions, but only if that leads to another action card. SMITHY lets the player draw 3, but since they would be out of actions, it is ranked lower than cards that have draw effects and action effects. 
+The cards listed below are the best cards for getting actions. This was determined by the number of actions that those cards give as well as pairing that with drawing cards. Drawing cards can lead to more actions, but only if that leads to another action card. SMITHY lets the player draw 3, but since they would be out of actions, it is ranked lower than cards that have draw effects and action effects. 
 
-The strategy looks at every card in the \textit{get\_can\_buy} and \textit{get\_playable\_cards} piles, and selects the card with the lowest index in the list bellow. 
+The strategy looks at every card in the \textit{get\_can\_buy} and \textit{get\_playable\_cards} piles, and selects the card with the lowest index in the list below. 
 
 \begin{verbatim}
 max_action_cards = ["LABORATORY", "FESTIVAL", "MARKET", 
@@ -256,9 +256,9 @@ Festival and Market
 
 \subsubsection{Simplifications}
 
-Only a subset of cards are being used for these simulations because they require no user input. The rest of the cards require some decision making beyond just picking a card to play. This isn't a big problem since the strategies can be expanded to include also decisions with other players. I am ignoring the rest of the cards however to ensure I get good results with a subset of cards. \\
+Only a subset of cards are being used for these simulations because they require no user input. The rest of the cards require some decision making beyond just picking a card to play. This isn't a big problem since the strategies can be expanded to include also decisions with other players. I am ignoring the rest of the cards, however, to ensure I get good results with a subset of cards. \\
 \\
-Copper should not be purchased, takes up one of the precious five spots in the hand. We will have random that might purchase a copper card so we will still have some player data. 
+Copper should not be purchased; it takes up one of the precious five spots in the hand. We need to allow for this to happen for random and max money, but this is not practical for actual gameplay.
 
 \section{Simulations}
 
@@ -272,7 +272,7 @@ Another interesting observation that comes from looking at the simulated games, 
 
 \subsection{Win Charts}
 
-Games were player with 3 players to start. Here is an example of some of the simulation scores: 
+Games were played between various numbers of players. Here is an example of some of the distribution os simulation scores: 
 \\
 \\
 \textbf{Random} 
@@ -280,38 +280,56 @@ Games were player with 3 players to start. Here is an example of some of the sim
 
 The random strategies performed as expected. There were more outliers and the win scores were about the same. This simulation was more of pilot test to see how the simulations would interact. 
 
-\begin{figure}[H]
-\includegraphics[width=.75\textwidth]{random_random_random}
-\centering
+\begin{figure}[H] \centering
+   \begin{minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{random_random_random}}
+   \end{minipage}
+   \begin {minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{random_random_wins}}
+   \end{minipage}
 \end{figure}
 
 \textbf{Action vs. Money vs. Random} \\
 
-Money strategy did the best while random rarely won. From this we have an indicator that maximizing money might be a better first strategy to get money towards buying a province. It is worth noting that the action strategy tends to lead to more cards and actions, this is effective if there is money to draw, but if only actions are drawn, then more actions are not as effective as they can be. 
+Money strategy did the best while random rarely won. From this, we have an indicator that maximizing money might be a better first strategy to get money towards buying a province. It is worth noting that the action strategy tends to lead to more cards and actions, this is effective if there is money to draw, but if only actions are drawn, then more actions are not as effective as they can be. 
 
-\begin{figure}[H]
-\includegraphics[width=.75\textwidth]{action_buy_random}
-\centering
+\begin{figure}[H] \centering
+   \begin{minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{action_buy_random}}
+   \end{minipage}
+   \begin {minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{action_buy_random_wins}}
+   \end{minipage}
 \end{figure}
 
 
 \textbf{Balance vs. Action vs. Money vs. Random}\\
 
-Balance takes on some of the flaws of the action strategy. Thus, it sits in-between the best strategy so far, Max Money, and the okay action strategy. 
+Balance takes on some of the flaws of the action strategy. Thus, it wins less than just a money strategy because it does not leverage the action cards effectively to build money.
 
-\begin{figure}[H]
-\includegraphics[width=.75\textwidth]{all_strat}
-\centering
+\begin{figure}[H] \centering
+   \begin{minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{all_strat}}
+   \end{minipage}
+   \begin {minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{bal_action_money_random_wins}}
+   \end{minipage}
 \end{figure}
 
 \textbf{Festival vs. Market}\\
 
-While market is slightly higher, they are similar enough that there is probably no significant difference. This will be tested in the hypothesis tests. Notice that the scores are lower for these than the other tests. Lower scores might indicate quicker wins. A quick win means someone is able to buy a province faster than normal. These cards probably work better in combination, but at least the test sheds some light that they are relatively equally balances. This indicates that their usage must depend on the situation and that by themselves, they don't differ. Their value most likely comes from working towards getting other cards. For example, getting 2 gold from festival could help push a players money count to 8 in order to purchase a Province.
+While market is higher, it is interesting that the points are similar in distribution. The score difference will be tested in the hypothesis tests. Notice that the scores are lower for these than the other tests. Lower scores might indicate quicker wins. A quick win means someone is able to buy a province faster than normal. These cards probably work better in combination to be valuable, but we learned that alone, market seems to be a better card for the money. Value in a game most likely comes from working towards getting other cards and festival plays a role in contributing more money than market. For example, getting 2 gold from festival could help push a players money count to 8 in order to purchase a Province. 
+\\
 
-\begin{figure}[H]
-\includegraphics[width=.75\textwidth]{festival_market}
-\centering
+\begin{figure}[H] \centering
+   \begin{minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{festival_market}}
+   \end{minipage}
+   \begin {minipage}{0.49\textwidth}
+     \frame{\includegraphics[width=\linewidth]{fest_market_wins}}
+   \end{minipage}
 \end{figure}
+
 
 
 Get some win results and say if they are statistically significant with some tests, get those p-values
@@ -379,22 +397,23 @@ Can talk about the models I used to for strategies
 Using hypothesis tests, we can now answers questions like, 'Is playing festival on average a better move than market?' or 'Is strategy A, on average, better than strategy B?'
 
 \begin{verbatim}
-#now strategy differences
-colnames(win_all) <- c("Name", "Points")
-money_v_random = win_all[(win_all$Name == "sim-max_money-2" | 
-		win_all$Name == "sim-random-3"), ]
+#Question - Is festival significantly different than market
+head(fest_v_market)
+colnames(fest_v_market) <- c("Name", "Points")
+festival_data = fest_v_market[fest_v_market$Name == "sim-festival-0", ]
+market_data = fest_v_market[fest_v_market$Name == "sim-market-1", ]
 
-counts = c()
-for (item in money_v_random$Name) {
-  if (item == "sim-max_money-2") {
-    counts = c(counts, 1)
-  } else {
-    counts = c(counts, 0)
-  }
-}
-money_v_random$counts = counts
-money_v_random$Name <- droplevels(money_v_random$Name)
-prop.test(table(money_v_random$counts, money_v_random$Name), correct = FALSE)
+summary(festival_data)
+summary(market_data)
+
+#the points clearly aren't statistically different, but number of wins looks like it might be
+#we will look at win percentage
+
+n = length(fest_v_market$Points)
+prop_fest = length((festival_data$Points)) / n
+prop_market = length((market_data$Points)) / n
+
+prop.test(x = c(length((festival_data$Points)), length((market_data$Points))), n = c(n, n), correct = FALSE)
 \end{verbatim}
 
 \subsubsection{Results}
@@ -408,17 +427,33 @@ prop.test(table(money_v_random$counts, money_v_random$Name), correct = FALSE)
    \end{minipage}
 \end{figure}
 
+Both p-values are statistically significant and 0 not even close to being contained in the 95\% confidence interval. These results are useful because we can determine if the difference in wins between two strategies are statistically different. This tells us that some simple strategies are better than others. Our results determined that market and festival are different and a money is better than a random strategy. 
+
 \section{Risks}
 
 Strategies don't produce good results for testing because having the entire game come down to just just one win/loss classification doesn't make realistic sense for scaling this approach. Every move could be taken into consideration for more accurate results. There would need to be a way to measure if each move is good or bad though. 
 \\
+\\
 The action strategy might not be good because it could be more of a support role, meaning it works well in combination to other cards, but not by itself against a money strategy. This also accounts for the weaknesses in balance. To fix this, strategies need to be smarter with more rules to discover these additional benefits from pairing action cards. Money cards don't pair well which makes a direct comparison harder. 
+\\
 \\
 Not testing more of the cards, but would make the simulations much more complicated. This was still a good approach for understanding the relationship between drawing, buying money, and buying cards that give actions.
 
 \section{Results}
 
-\section{Summary}
+Overall, the results of the simulations and the hypothesis tests were fairly intuitive. The hypothesis tests would be more useful if the differences were closer, but these results were clear, indicating that some simple strategic differences lead to major differences in the outcome of the games. A balance between buying and actions wasn't improved, more of an average between the two. I am not convinced that a fully money focused strategy is best, with more complicated strategies, testing smarter balances would be useful, especially when programming in some combinations of cards that might yield more benefit than the sum of the individual benefits of the two cards. 
+\\
+The assumptions were a big part in testing the strategies. These assumptions greatly simplify the game into two buckets, money and action, which limits the kind of creativity can be made into strategies. While these assumptions were good for initial testing, it is not good for actually figuring out how to beat someone every time you play them. 
+
+\section{Summary - Playing Tips}
+
+While the results of the game do not guarantee a victory, they do offer some insights into playing better. 
+
+	\begin{enumerate}
+ 		 \item Market and Festival are useful cards, but Market is a better choice when deciding which one to buy first. 
+		 \item Money should be a high priority every hand, but should not be the only priority because action cards can be used in combination to increase the power of a hand
+		 \item The win margins of the simulations did not separate the strategies well with K-means, but, we did discover that some strategies have much lower points, indicating they get to victory quicker. 
+	\end{enumerate}
 
 \section{Coding Reflection}
 
@@ -432,7 +467,7 @@ Not testing more of the cards, but would make the simulations much more complica
 
 There are many different approaches to analyzing this game and many more questions that could have been asked. Throughout the process, I wrote down different aspects of the game that could have been tested. Here are some of the things that could be done on top of what I already did. Since the game can be easily adapted to include other modes of play and other simulations, they are not difficult to add on. \\
 
-One thing to look at is getting more information out of each simulation, right now the outputs are only who wins and the points that were scored by the winner. However, other good information might be things such as typo of victory (either based on the stockpiles or provinces) and margin of victory. These numbers could be used to figure out a ranking of scores. So this way instead of having to run a lot of simulations with different strategies, instead one could find scores of how well the simulations perform. This might help quantify how good specific modifications are to strategies. 
+One thing to look at is getting more information out of each simulation, right now the outputs are only who wins and the points that were scored by the winner. However, other good information might be things such as typo of victory (either based on the stockpiles or provinces) and margin of victory. These numbers could be used to figure out a ranking of scores. So this way instead of having to run a lot of simulations with different strategies, instead one could find scores of how well the simulations perform. This might help quantify how good specific modifications are to the strategies. 
 \\
 \\
 \textbf{Additional modes:}\\
@@ -454,16 +489,6 @@ There are many more strategies that can be tried to find the best solution. We c
 		 \item Program more cards to auto play so simulations still work
 	\end{enumerate}
 	
-
-TO ADD
-based on the cost of village and lab, I said cards are more valuable than actions if they are both present (smitty)
-
-how I designed the strategies, actions vs money and always buying a province. How the base should be better than random but its a good first thing. 
-
-make it so each strategy buys a province if they can and redo your simulations!
-
-check this doc with Grammarly - test run
-
 
 \section{Open Source}
 

@@ -1,0 +1,36 @@
+\contentsline {section}{\numberline {1}Dominion}{2}{section.1}
+\contentsline {section}{\numberline {2}Motivation}{2}{section.2}
+\contentsline {section}{\numberline {3}Rules}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}Setup}{2}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Gameplay}{3}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}There are four phases for a hand}{3}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}End}{3}{subsection.3.4}
+\contentsline {section}{\numberline {4}General Approach}{3}{section.4}
+\contentsline {section}{\numberline {5}Goals}{4}{section.5}
+\contentsline {section}{\numberline {6}Game Design}{4}{section.6}
+\contentsline {section}{\numberline {7}Command Line Interface}{4}{section.7}
+\contentsline {section}{\numberline {8}Exploratory Analysis}{6}{section.8}
+\contentsline {section}{\numberline {9}Strategies}{6}{section.9}
+\contentsline {subsection}{\numberline {9.1}Intuition}{6}{subsection.9.1}
+\contentsline {subsection}{\numberline {9.2}Simulated Strategies}{7}{subsection.9.2}
+\contentsline {subsection}{\numberline {9.3}Strategies Implemented}{7}{subsection.9.3}
+\contentsline {subsubsection}{\numberline {9.3.1}Random}{9}{subsubsection.9.3.1}
+\contentsline {subsubsection}{\numberline {9.3.2}Max Actions}{9}{subsubsection.9.3.2}
+\contentsline {subsubsection}{\numberline {9.3.3}Max Money}{9}{subsubsection.9.3.3}
+\contentsline {subsubsection}{\numberline {9.3.4}Balance}{10}{subsubsection.9.3.4}
+\contentsline {subsubsection}{\numberline {9.3.5}Card Specific}{10}{subsubsection.9.3.5}
+\contentsline {subsubsection}{\numberline {9.3.6}Simplifications}{10}{subsubsection.9.3.6}
+\contentsline {section}{\numberline {10}Simulations}{10}{section.10}
+\contentsline {subsection}{\numberline {10.1}Qualitative Insights}{10}{subsection.10.1}
+\contentsline {subsection}{\numberline {10.2}Win Charts}{11}{subsection.10.2}
+\contentsline {section}{\numberline {11}Gathering Data}{14}{section.11}
+\contentsline {section}{\numberline {12}Brief Model Overview}{15}{section.12}
+\contentsline {subsection}{\numberline {12.1}K-Means}{15}{subsection.12.1}
+\contentsline {subsection}{\numberline {12.2}Hypothesis Testing}{16}{subsection.12.2}
+\contentsline {subsubsection}{\numberline {12.2.1}Results}{16}{subsubsection.12.2.1}
+\contentsline {section}{\numberline {13}Risks}{16}{section.13}
+\contentsline {section}{\numberline {14}Results}{17}{section.14}
+\contentsline {section}{\numberline {15}Summary - Playing Tips}{17}{section.15}
+\contentsline {section}{\numberline {16}Coding Reflection}{17}{section.16}
+\contentsline {section}{\numberline {17}Miscellaneous and further ideas}{17}{section.17}
+\contentsline {section}{\numberline {18}Open Source}{18}{section.18}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  22 NOV 2017 11:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  28 NOV 2017 01:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -418,19 +418,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 159--163
 
  []
 
-[6]
+[6] [7]
 Overfull \hbox (18.39302pt too wide) in paragraph at lines 224--224
 []                        \OT1/cmtt/m/n/10.95 print("cannot play that card, mov
 ing to buys instead")[] 
  []
 
-[7]
+[8]
 Overfull \hbox (47.13646pt too wide) in paragraph at lines 247--247
 []\OT1/cmtt/m/n/10.95 max_money_cards = ["GOLD", "SILVER", "MONEYLENDER", "FEST
 IVAL", "MARKET", "COPPER"][] 
  []
 
-[8]
+
 Underfull \hbox (badness 10000) in paragraph at lines 259--262
 
  []
@@ -449,124 +449,176 @@ Underfull \hbox (badness 10000) in paragraph at lines 275--280
 File: assets/random_random_random.png Graphic file (type png)
 
 <use assets/random_random_random.png>
-Package pdftex.def Info: assets/random_random_random.png used on input line 284
+Package pdftex.def Info: assets/random_random_random.png used on input line 285
 .
-(pdftex.def)             Requested size: 322.50346pt x 308.49852pt.
+(pdftex.def)             Requested size: 210.70462pt x 201.5451pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 288--289
+<assets/random_random_wins.png, id=221, 570.13pt x 564.1075pt>
+File: assets/random_random_wins.png Graphic file (type png)
+
+<use assets/random_random_wins.png>
+Package pdftex.def Info: assets/random_random_wins.png used on input line 288.
+(pdftex.def)             Requested size: 210.70462pt x 208.47548pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 292--293
 
  []
 
-[10 <./assets/random_random_random.png>]
-<assets/action_buy_random.png, id=226, 485.815pt x 467.7475pt>
+[10 <./assets/random_random_random.png> <./assets/random_random_wins.png>]
+<assets/action_buy_random.png, id=228, 485.815pt x 467.7475pt>
 File: assets/action_buy_random.png Graphic file (type png)
 
 <use assets/action_buy_random.png>
-Package pdftex.def Info: assets/action_buy_random.png used on input line 293.
-(pdftex.def)             Requested size: 322.50346pt x 310.50574pt.
+Package pdftex.def Info: assets/action_buy_random.png used on input line 298.
+(pdftex.def)             Requested size: 210.70462pt x 202.86897pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 298--299
+<assets/action_buy_random_wins.png, id=229, 570.13pt x 564.1075pt>
+File: assets/action_buy_random_wins.png Graphic file (type png)
+
+<use assets/action_buy_random_wins.png>
+Package pdftex.def Info: assets/action_buy_random_wins.png used on input line 3
+01.
+(pdftex.def)             Requested size: 210.70462pt x 208.47548pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 306--307
 
  []
 
-<assets/all_strat.png, id=227, 484.81125pt x 466.74374pt>
+<assets/all_strat.png, id=230, 484.81125pt x 466.74374pt>
 File: assets/all_strat.png Graphic file (type png)
 
 <use assets/all_strat.png>
-Package pdftex.def Info: assets/all_strat.png used on input line 303.
-(pdftex.def)             Requested size: 322.50346pt x 310.50175pt.
- [11 <./assets/action_buy_random.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 307--308
+Package pdftex.def Info: assets/all_strat.png used on input line 312.
+(pdftex.def)             Requested size: 210.70462pt x 202.85384pt.
+
+<assets/bal_action_money_random_wins.png, id=231, 570.13pt x 564.1075pt>
+File: assets/bal_action_money_random_wins.png Graphic file (type png)
+
+<use assets/bal_action_money_random_wins.png>
+Package pdftex.def Info: assets/bal_action_money_random_wins.png used on input 
+line 315.
+(pdftex.def)             Requested size: 210.70462pt x 208.47548pt.
+ [11 <./assets/action_buy_random.png> <./assets/action_buy_random_wins.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 319--320
 
  []
 
-<assets/festival_market.png, id=233, 487.8225pt x 468.75125pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 321--323
+
+ []
+
+<assets/festival_market.png, id=238, 486.81876pt x 470.75874pt>
 File: assets/festival_market.png Graphic file (type png)
 
 <use assets/festival_market.png>
-Package pdftex.def Info: assets/festival_market.png used on input line 312.
-(pdftex.def)             Requested size: 322.50346pt x 309.89891pt.
- [12 <./assets/all_strat.png>] [13 <./assets/festival_market.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 357--358
+Package pdftex.def Info: assets/festival_market.png used on input line 326.
+(pdftex.def)             Requested size: 210.70462pt x 203.7512pt.
+
+<assets/fest_market_wins.png, id=239, 570.13pt x 564.1075pt>
+File: assets/fest_market_wins.png Graphic file (type png)
+
+<use assets/fest_market_wins.png>
+Package pdftex.def Info: assets/fest_market_wins.png used on input line 329.
+(pdftex.def)             Requested size: 210.70462pt x 208.47548pt.
+ [12 <./assets/all_strat.png> <./assets/bal_action_money_random_wins.png>] [13 
+<./assets/festival_market.png> <./assets/fest_market_wins.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 375--376
 
  []
 
-<assets/actual_points.png, id=247, 486.81876pt x 467.7475pt>
+<assets/actual_points.png, id=255, 486.81876pt x 467.7475pt>
 File: assets/actual_points.png Graphic file (type png)
 
 <use assets/actual_points.png>
-Package pdftex.def Info: assets/actual_points.png used on input line 370.
+Package pdftex.def Info: assets/actual_points.png used on input line 388.
 (pdftex.def)             Requested size: 210.70462pt x 202.44788pt.
 
-<assets/kmeans.png, id=248, 486.81876pt x 467.7475pt>
+<assets/kmeans.png, id=256, 486.81876pt x 467.7475pt>
 File: assets/kmeans.png Graphic file (type png)
  <use assets/kmeans.png>
-Package pdftex.def Info: assets/kmeans.png used on input line 373.
+Package pdftex.def Info: assets/kmeans.png used on input line 391.
 (pdftex.def)             Requested size: 210.70462pt x 202.44788pt.
 
 [14 <./assets/actual_points.png> <./assets/kmeans.png>]
-Overfull \hbox (12.64433pt too wide) in paragraph at lines 398--398
-[]\OT1/cmtt/m/n/10.95 prop.test(table(money_v_random$counts, money_v_random$Nam
-e), correct = FALSE)[] 
+Overfull \hbox (104.62334pt too wide) in paragraph at lines 417--417
+[]\OT1/cmtt/m/n/10.95 #the points clearly aren't statistically different, but n
+umber of wins looks like it might be[] 
  []
 
-<assets/mark_fest_test.png, id=255, 581.17125pt x 186.6975pt>
+
+Overfull \hbox (190.85365pt too wide) in paragraph at lines 417--417
+[]\OT1/cmtt/m/n/10.95 prop.test(x = c(length((festival_data$Points)), length((m
+arket_data$Points))), n = c(n, n), correct = FALSE)[] 
+ []
+
+<assets/mark_fest_test.png, id=263, 627.34375pt x 178.6675pt>
 File: assets/mark_fest_test.png Graphic file (type png)
 
 <use assets/mark_fest_test.png>
-Package pdftex.def Info: assets/mark_fest_test.png used on input line 404.
-(pdftex.def)             Requested size: 210.70462pt x 67.68678pt.
+Package pdftex.def Info: assets/mark_fest_test.png used on input line 423.
+(pdftex.def)             Requested size: 210.70462pt x 60.00732pt.
 
-<assets/mon_rand_test.png, id=256, 587.19376pt x 186.6975pt>
+<assets/mon_rand_test.png, id=264, 587.19376pt x 178.6675pt>
 File: assets/mon_rand_test.png Graphic file (type png)
 
 <use assets/mon_rand_test.png>
-Package pdftex.def Info: assets/mon_rand_test.png used on input line 407.
-(pdftex.def)             Requested size: 210.70462pt x 66.99168pt.
- [15 <./assets/mark_fest_test.png> <./assets/mon_rand_test.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 433--434
+Package pdftex.def Info: assets/mon_rand_test.png used on input line 426.
+(pdftex.def)             Requested size: 210.70462pt x 64.11032pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 434--441
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--447
+Underfull \hbox (badness 10000) in paragraph at lines 434--441
+
+ []
+
+[15 <./assets/mark_fest_test.png> <./assets/mon_rand_test.png>] [16]
+Underfull \hbox (badness 10000) in paragraph at lines 468--469
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--447
+Underfull \hbox (badness 10000) in paragraph at lines 470--482
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--447
+Underfull \hbox (badness 10000) in paragraph at lines 470--482
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--447
+Underfull \hbox (badness 10000) in paragraph at lines 470--482
 
  []
 
-[16]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 475.
- [17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 475.
+
+Underfull \hbox (badness 10000) in paragraph at lines 470--482
+
+ []
+
+[17]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 500.
+ [18]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 500.
  (./report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 475.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 475.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 500.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 500.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 6784D6F3ED5D7E39D93BB21002B67130;2080.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 475.
+(rerunfilecheck)             Checksum: 5216B96B044200BC080D2E471B6BB76A;2094.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 500.
  ) 
 Here is how much of TeX's memory you used:
- 6614 strings out of 493014
- 95703 string characters out of 6133351
+ 6638 strings out of 493014
+ 96419 string characters out of 6133351
  190076 words of memory out of 5000000
- 9997 multiletter control sequences out of 15000+600000
+ 10013 multiletter control sequences out of 15000+600000
  12225 words of font info for 46 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 29i,10n,28p,768b,442s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 29i,10n,28p,873b,442s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb
@@ -580,10 +632,10 @@ al/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
 texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/te
 xlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (17 pages, 644186 bytes).
+Output written on report.pdf (18 pages, 668700 bytes).
 PDF statistics:
- 343 PDF objects out of 1000 (max. 8388607)
- 290 compressed objects within 3 object streams
- 81 named destinations out of 1000 (max. 500000)
- 334 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 359 PDF objects out of 1000 (max. 8388607)
+ 297 compressed objects within 3 object streams
+ 85 named destinations out of 1000 (max. 500000)
+ 354 words of extra memory for PDF output out of 10000 (max. 10000000)
 
