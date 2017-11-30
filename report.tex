@@ -96,7 +96,7 @@ The game is built using object oriented programming in Python. The game is broke
 	\begin{itemize}
   		\item \textbf{\textit{player.py}} - The player controls everything relating to their deck and hand. They draw, discard, play, and win. 
   		\item \textbf{\textit{gameBoard.py}} - The board manages everything a player has to interact with. It contains the gold, the stockpiles, and methods to interact with the board. The board has a subclass called \textbf{\textit{Cards}} and each card can be played by a player on a game board. 
-		\item \textbf{\textit{play.py}} - Play manages the logic of the game. This is where you select the initial cards to play with, it checks to make sure money >= cost of a card when buying, and it also manages every turn until someone wins.  Strategies will also be added onto this to made the decisions then their player comes up. Instead of asking the player what to do, the strategies will take care of the buy or play decisions. 
+		\item \textbf{\textit{play.py}} - Play manages the logic of the game. This is where you select the initial cards to play with, it checks to make sure money >= cost of a card when buying, and it also manages every turn until someone wins.  Strategies will also be added onto this to made the decisions when the player comes up. Instead of asking the player what to do, the strategies will take care of the buy or play decisions. 
 	\end{itemize}
 	
 From there, \textbf{\textit{strategies.py}} was added on as a way to attach different strategies to \textbf{\textit{play.py}} and \textbf{\textit{models.py}} is used to do tests and calculate probabilities. 
@@ -252,7 +252,7 @@ This strategy counts the number of cards in my hand, deck, and discard that are 
 
 \subsubsection{Card Specific}
 
-Festival and Market
+Festival and Market. This strategy buys festival or market whenever possible, otherwise, the default strategy is random. This changes only one condition between the two test cases and keeps everything the same. This lets us isolate the win difference to only the effect of the card. 
 
 \subsubsection{Simplifications}
 
@@ -372,6 +372,9 @@ Can talk about the models I used to for strategies
 
 \subsection{K-Means}
 
+K means, with k = 4, helps detect patterns in the data by grouping them. The hope is that a strategy will win enough times and have enough of a margin in those games that there are clear indications of one dominant strategy. The results of the model make some separations, like the top margins vs. the lower margin victories, but it does not capture the distinct groups. The errors are large and the clustering not very helpful, but for more complicated strategies, this could be a useful way for distinguishing between two strategies. 
+\\
+
 \textbf{Errors}\\
 
 \begin{center}
@@ -444,6 +447,9 @@ Not testing more of the cards, but would make the simulations much more complica
 Overall, the results of the simulations and the hypothesis tests were fairly intuitive. The hypothesis tests would be more useful if the differences were closer, but these results were clear, indicating that some simple strategic differences lead to major differences in the outcome of the games. A balance between buying and actions wasn't improved, more of an average between the two. I am not convinced that a fully money focused strategy is best, with more complicated strategies, testing smarter balances would be useful, especially when programming in some combinations of cards that might yield more benefit than the sum of the individual benefits of the two cards. 
 \\
 The assumptions were a big part in testing the strategies. These assumptions greatly simplify the game into two buckets, money and action, which limits the kind of creativity can be made into strategies. While these assumptions were good for initial testing, it is not good for actually figuring out how to beat someone every time you play them. 
+\\
+
+Another key insight is looking at the points of the winner. Although the money strategy dominated the action strategy, the points were higher. Also, the festival vs. market games were lower scoring games. This might provide evidence that action based strategies can lead to quicker victories. The problem with the simulations is they are both equally simple strategies because they share the same heuristics. Action strategies seem to require more complicated decision making. If they can lead to quicker victories, then they might show promise in beating money based strategies. 
 
 \section{Summary - Playing Tips}
 
@@ -482,8 +488,8 @@ There are many more strategies that can be tried to find the best solution. We c
 	\begin{enumerate}
  		 \item Average score for each simulation
 		 \item Probability of particular hands to help guide the strategies
-		 \item more simulations
-		 \item probability models
+		 \item More simulations
+		 \item Probability models
 		 \item Incorporate ML concepts  to Dominion, the goal is to maximize points and we would train on the moves in a game that lead to increased points only if that game leads to a win
 		 \item Redesign the game in some aspects, making the game modes more modular and the simulations easier to adjust
 		 \item Program more cards to auto play so simulations still work
